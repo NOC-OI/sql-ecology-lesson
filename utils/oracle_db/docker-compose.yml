@@ -2,9 +2,8 @@ services:
   oracle:
     image: gvenzl/oracle-xe:latest
     environment:
-      # ORACLE_PASSWORD: my_password
-      # ORACLE_DATABASE: portal_mammals
-      ORACLE_RANDOM_PASSWORD: true
+      ORACLE_PASSWORD: my_password
+      ORACLE_DATABASE: PORTAL_MAMMALS
       # APP_USER: my_user
       # APP_USER_PASSWORD: my_password
     ports:

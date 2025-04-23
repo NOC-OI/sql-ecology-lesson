@@ -1,5 +1,5 @@
-curl -LJO https://raw.githubusercontent.com/gvenzl/sample-data/master/countries-cities-currencies/install.sql
+curl -LJO https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/init.sql
 
-sqlplus -s test/test@//localhost/XEPDB1 @install.sql
+sqlplus -s bodc/bodc@//localhost/PORTAL_MAMMALS @init.sql
 
-rm install.sql
+rm init.sql
