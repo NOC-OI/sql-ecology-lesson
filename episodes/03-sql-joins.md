@@ -23,15 +23,13 @@ exercises: 10
 To combine data from two tables we use an SQL `JOIN` clause, which comes after
 the `FROM` clause.
 
-Database tables are used to organize and group data by common characteristics or principles.  
-Often, we need to combine elements from separate tables into a single tables or queries for analysis and visualization.
-A JOIN is a means for combining columns from multiple tables by using values common to each.
+Database tables are used to organise and group data by common characteristics or principles.
+Often, we need to combine elements from separate tables into a single table or queries for analysis and visualisation.
+A `JOIN` is a way to combine columns from multiple tables using values common to each. The `JOIN` keyword, combined with `ON`, is used to bring together fields from different tables.
 
-The JOIN keyword combined with ON is used to combine fields from separate tables.
-
-A `JOIN` clause on its own will result in a cross product, where each row in
-the first table is paired with each row in the second table. Usually this is not
-what is desired when combining two tables with data that is related in some way.
+A `JOIN` clause on its own will produce a **Cartesian product**, where each row in
+the first table is paired with every row in the second table. This is usually **not**
+what we want when combining two related datasets.
 
 For that, we need to tell the computer which columns provide the link between the two
 tables using the word `ON`.  What we want is to join the data with the same
@@ -52,11 +50,14 @@ The output from using the `JOIN` clause will have columns from the first table p
 columns from the second table. For the above statement, the output will be a table
 that has the following column names:
 
-| record\_id | month                                                                           | day | year      | plot\_id  | species\_id | sex | hindfoot\_length | weight | species\_id | genus     | species  | taxa   | 
+| record\_id | month                                                                           | day | year      | plot\_id  | species\_id | sex | hindfoot\_length | weight | species\_id | genus     | species  | taxa   |
 | --------- | ------------------------------------------------------------------------------- | --- | --------- | -------- | ---------- | --- | --------------- | ------ | ---------- | --------- | -------- | ------ |
-| ...       |                                                                                 |     |           |          |            |     |                 |        |            |           |          |        | 
-| 96        | 8                                                                               | 20  | 1997      | 12       | **DM**           | M   | 36              | 41     | **DM**           | Dipodomys | merriami | Rodent | 
-| ...       |                                                                                 |     |           |          |            |     |                 |        |            |           |          |        | 
+| ...       |                                                                                 |     |           |          |            |     |                 |        |            |           |          |        |
+| 96        | 8                                                                               | 20  | 1997      | 12       | **DM**           | M   | 36              | 41     | **DM**           | Dipodomys | merriami | Rodent |
+| ...       |                                                                                 |     |           |          |            |     |                 |        |            |           |          |        |
+
+
+You can see that `species_id` appears twice—once from the `surveys` table and once from the `species` table—because both tables include a column with the same name.
 
 Alternatively, we can use the word `USING`, as a short-hand. `USING` only
 works on columns which share the same name. In this case we are
@@ -72,11 +73,11 @@ USING (species_id);
 
 The output will only have one **species\_id** column
 
-| record\_id | month                                                                           | day | year      | plot\_id  | species\_id | sex | hindfoot\_length | weight | genus      | species   | taxa     | 
+| record\_id | month                                                                           | day | year      | plot\_id  | species\_id | sex | hindfoot\_length | weight | genus      | species   | taxa     |
 | --------- | ------------------------------------------------------------------------------- | --- | --------- | -------- | ---------- | --- | --------------- | ------ | ---------- | --------- | -------- |
-| ...       |                                                                                 |     |           |          |            |     |                 |        |            |           |          | 
-| 96        | 8                                                                               | 20  | 1997      | 12       | DM         | M   | 36              | 41     | Dipodomys  | merriami  | Rodent   | 
-| ...       |                                                                                 |     |           |          |            |     |                 |        |            |           |          | 
+| ...       |                                                                                 |     |           |          |            |     |                 |        |            |           |          |
+| 96        | 8                                                                               | 20  | 1997      | 12       | DM         | M   | 36              | 41     | Dipodomys  | merriami  | Rodent   |
+| ...       |                                                                                 |     |           |          |            |     |                 |        |            |           |          |
 
 We often won't want all of the fields from both tables, so anywhere we would
 have used a field name in a non-join query, we can use `table.colname`.
@@ -92,14 +93,14 @@ JOIN species
 ON surveys.species_id = species.species_id;
 ```
 
-| year      | month                                                                           | day | genus     | species  | 
+| year      | month                                                                           | day | genus     | species  |
 | --------- | ------------------------------------------------------------------------------- | --- | --------- | -------- |
-| ...       |                                                                                 |     |           |          | 
-| 1977      | 7                                                                               | 16  | Neotoma   | albigula | 
-| 1977      | 7                                                                               | 16  | Dipodomys | merriami | 
-| ...       |                                                                                 |     |           |          | 
+| ...       |                                                                                 |     |           |          |
+| 1977      | 7                                                                               | 16  | Neotoma   | albigula |
+| 1977      | 7                                                                               | 16  | Dipodomys | merriami |
+| ...       |                                                                                 |     |           |          |
 
-Many databases, including SQLite, also support a join through the `WHERE` clause of a query.  
+Many databases, including **Oracle**, also support a join through the `WHERE` clause of a query.
 For example, you may see the query above written without an explicit JOIN.
 
 ```sql
@@ -151,20 +152,16 @@ survey data.
 SELECT COUNT(*) FROM surveys;
 ```
 
-This is because, by default, SQL only returns records where the joining value
-is present in the joined columns of both tables (i.e. it takes the *intersection*
-of the two join columns). This joining behaviour is known as an `INNER JOIN`.
-In fact the `JOIN` keyword is shorthand for `INNER JOIN` and the two
-terms can be used interchangeably as they will produce the same result.
+This is because, by default, SQL only returns records where the joining value is present in the joined columns of both tables (i.e. it takes the *intersection* of the two join columns). This joining behaviour is known as an `INNER JOIN`. In fact, the `JOIN` keyword is shorthand for `INNER JOIN` in Oracle, and the two terms can be used interchangeably as they will produce the same result.
 
 We can also tell the computer that we wish to keep all the records in the first
-table by using a `LEFT OUTER JOIN` clause, or `LEFT JOIN` for short. The difference
-between the two JOINs can be visualized like so:
+table by using a `LEFT OUTER JOIN` clause, or `LEFT JOIN` for short. Additionally, Oracle also supports `RIGHT OUTER JOIN` (or simply `RIGHT JOIN`), which works in a similar manner but keeps all records from the right table (`species`). And you also have `FULL OUTER JOIN`, which keeps all records from both tables. The difference
+between the JOINs can be visualised like so:
 
 ![
-Diagrams representing INNER JOIN and LEFT JOIN in SQLite
+Diagrams representing JOINs in Oracle
 ](fig/sql-joins.png){
-alt='Diagrams representing INNER JOIN and LEFT JOIN each include two overlapping circles labeled A (left) and B (right). For INNER JOIN, the intersection of the two circles is filled in. The associated query is SELECT * FROM A JOIN B ON A.Key = B.Key. For LEFT JOIN, circle A, including its intersection with circle B, is filled in. The associated query is SELECT * FROM A LEFT JOIN B ON A.Key = B.Key.'
+alt='Diagrams representing JOINs in Oracle'
 }
 
 :::::::::::::::::::::::::::::::::::::::  challenge
@@ -209,8 +206,7 @@ WHERE species_id IS NULL;
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Remember: In SQL a `NULL` value in one table can never be joined to a `NULL` value in a
-second table because `NULL` is not equal to anything, not even itself.
+**Important Note:** In SQL, a `NULL` value in one table can never be joined to a `NULL` value in another table because `NULL` is not equal to anything, not even itself.
 
 ### Combining joins with sorting and aggregation
 
@@ -238,11 +234,17 @@ GROUP BY plots.plot_type;
 ## Solution
 
 ```sql
+-- select the plot id, genus and count of individuals
 SELECT surveys.plot_id, species.genus, COUNT(*) AS number_indiv
+-- from table surveys
 FROM surveys
+-- join with table species
 JOIN species
+-- on the species id
 ON surveys.species_id = species.species_id
+-- group the results by genus and plot id
 GROUP BY species.genus, surveys.plot_id
+-- order the results by plot id and number of individuals
 ORDER BY surveys.plot_id ASC, number_indiv DESC;
 ```
 
@@ -284,7 +286,7 @@ place of `NULL`.
 We can represent unknown sexes with `'U'` instead of `NULL`:
 
 ```sql
-SELECT species_id, sex, COALESCE(sex, 'U')
+SELECT species_id, sex, COALESCE(sex, 'U') AS sex_cleaned
 FROM surveys;
 ```
 
@@ -357,10 +359,12 @@ ON COALESCE(surveys.species_id, 'AB') = species.species_id;
 
 ```sql
 SELECT plot_id, COALESCE(genus, 'Rodent') AS genus2, COUNT(*)
-FROM surveys 
+FROM surveys
 LEFT JOIN species
 ON surveys.species_id=species.species_id
-GROUP BY plot_id, genus2;
+-- because we are using Oracle version 21, we need to write the full COALESCE
+-- instead of the alias genus2
+GROUP BY plot_id, COALESCE(genus, 'Rodent');
 ```
 
 :::::::::::::::::::::::::
@@ -374,32 +378,34 @@ is returned. This is useful for "nulling out" specific values.
 We can "null out" plot 7:
 
 ```sql
-SELECT species_id, plot_id, NULLIF(plot_id, 7)
+SELECT species_id, plot_id, NULLIF(plot_id, 7) AS plot_id_nullified
 FROM surveys;
 ```
 
 Some more functions which are common to SQL databases are listed in the table
 below:
 
-| Function  | Description                                                                     | 
-| --------- | ------------------------------------------------------------------------------- |
-| `ABS(n)`          | Returns the absolute (positive) value of the numeric expression *n*                | 
-| `COALESCE(x1, ..., xN)`          | Returns the first of its parameters that is not NULL                            | 
-| `LENGTH(s)`          | Returns the length of the string expression *s*                                    | 
-| `LOWER(s)`          | Returns the string expression *s* converted to lowercase                                                  | 
-| `NULLIF(x, y)`          | Returns NULL if *x* is equal to *y*, otherwise returns *x*                                                                | 
-| `ROUND(n)` or `ROUND(n, x)`      | Returns the numeric expression *n* rounded to *x* digits after the decimal point (0 by default)                                                 | 
-| `TRIM(s)`          | Returns the string expression *s* without leading and trailing whitespace characters                                                  | 
-| `UPPER(s)`          | Returns the string expression *s* converted to uppercase                                                  | 
+| Function                      | Description                                                                 |
+|------------------------------|-----------------------------------------------------------------------------|
+| `ABS(n)`                     | Returns the absolute (positive) value of the numeric expression *n*         |
+| `COALESCE(x1, ..., xN)`      | Returns the first of its arguments that is not `NULL`                       |
+| `LENGTH(s)`                  | Returns the number of characters in the string *s*                          |
+| `LOWER(s)`                   | Returns the string *s* in lowercase                                         |
+| `NULLIF(x, y)`               | Returns `NULL` if *x* = *y*, otherwise returns *x*                          |
+| `ROUND(n)` or `ROUND(n, x)`  | Rounds *n* to *x* decimal places (default is 0)                             |
+| `TRIM(s)`                    | Removes leading and trailing whitespace from the string *s*                |
+| `UPPER(s)`                   | Returns the string *s* in uppercase                                         |
 
-Finally, some useful functions which are particular to SQLite are listed in the
+Finally, some useful functions which are particular to Oracle are listed in the
 table below:
 
-| Function  | Description                                                                     | 
-| --------- | ------------------------------------------------------------------------------- |
-| `RANDOM()`          | Returns a random integer between -9223372036854775808 and +9223372036854775807. | 
-| `REPLACE(s, f, r)`          | Returns the string expression *s* in which every occurrence of *f* has been replaced with *r*                                                  | 
-| `SUBSTR(s, x, y)` or `SUBSTR(s, x)`      | Returns the portion of the string expression *s* starting at the character position *x* (leftmost position is 1), *y* characters long (or to the end of *s* if *y* is omitted)                                   | 
+| Function                       | Description                                                                 |
+|---------------------------------|-----------------------------------------------------------------------------|
+| `TO_NUMBER(s)`                  | Converts a string *s* to a numeric value. If the string is not a valid number, it returns an error. |
+| `TO_CHAR(d)`                    | Converts a date or number to a string in a specified format. E.g., `TO_CHAR(SYSDATE, 'YYYY-MM-DD')`. |
+| `TO_DATE(s, format)`            | Converts a string *s* to a date, using the specified format. |
+| `CURRENT_DATE`                  | Returns the current date in the session's time zone. |
+| `EXTRACT(field FROM date)`      | Extracts a specific part (e.g., year, month, day) from a date or timestamp. |
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
@@ -425,9 +431,10 @@ ORDER BY LENGTH(genus) DESC;
 As we saw before, aliases make things clearer, and are especially useful when joining tables.
 
 ```sql
-SELECT surv.year AS yr, surv.month AS mo, surv.day AS day, sp.genus AS gen, sp.species AS sp
-FROM surveys AS surv
-JOIN species AS sp
+SELECT surv.year AS yr, surv.month AS mo, surv.day AS day,
+       sp.genus AS gen, sp.species AS sp
+FROM surveys surv
+JOIN species sp
 ON surv.species_id = sp.species_id;
 ```
 
@@ -437,7 +444,7 @@ To practice we have some optional challenges for you.
 
 ## Challenge (optional):
 
-SQL queries help us *ask* specific *questions* which we want to answer about our data. The real skill with SQL is to know how to translate our scientific questions into a sensible SQL query (and subsequently visualize and interpret our results).
+SQL queries help us *ask* specific *questions* which we want to answer about our data. The real skill with SQL is to know how to translate our scientific questions into a sensible SQL query (and subsequently visualise and interpret our results).
 
 Have a look at the following questions; these questions are written in plain English. Can you translate them to *SQL queries* and give a suitable answer?
 
@@ -460,7 +467,7 @@ Have a look at the following questions; these questions are written in plain Eng
 ## Proposed solutions:
 
 1. Solution:
-  
+
   ```sql
   SELECT plot_type, COUNT(*) AS num_plots
   FROM plots
@@ -468,7 +475,7 @@ Have a look at the following questions; these questions are written in plain Eng
   ```
 
 2. Solution:
-  
+
   ```sql
   SELECT year, sex, COUNT(*) AS num_animal
   FROM surveys
@@ -476,48 +483,48 @@ Have a look at the following questions; these questions are written in plain Eng
   ```
 
 3. Solution:
-  
+
   ```sql
-  SELECT species_id, plot_type, COUNT(*) 
-  FROM surveys 
-  JOIN plots USING(plot_id) 
-  WHERE species_id IS NOT NULL 
+  SELECT species_id, plot_type, COUNT(*)
+  FROM surveys
+  JOIN plots USING(plot_id)
+  WHERE species_id IS NOT NULL
   GROUP BY species_id, plot_type;
   ```
 
 4. Solution:
-  
+
   ```sql
-  SELECT taxa, AVG(weight) 
-  FROM surveys 
+  SELECT taxa, AVG(weight)
+  FROM surveys
   JOIN species ON species.species_id = surveys.species_id
   GROUP BY taxa;
   ```
 
 5. Solution:
-  
+
   ```sql
-  SELECT surveys.species_id, MIN(weight), MAX(weight), AVG(weight) FROM surveys 
-  JOIN species ON surveys.species_id = species.species_id 
-  WHERE taxa = 'Rodent' 
+  SELECT surveys.species_id, MIN(weight), MAX(weight), AVG(weight) FROM surveys
+  JOIN species ON surveys.species_id = species.species_id
+  WHERE taxa = 'Rodent'
   GROUP BY surveys.species_id;
   ```
 
 6. Solution:
-  
+
   ```sql
   SELECT surveys.species_id, sex, AVG(hindfoot_length)
-  FROM surveys JOIN species ON surveys.species_id = species.species_id 
-  WHERE (taxa = 'Rodent') AND (sex IS NOT NULL) 
+  FROM surveys JOIN species ON surveys.species_id = species.species_id
+  WHERE (taxa = 'Rodent') AND (sex IS NOT NULL)
   GROUP BY surveys.species_id, sex;
   ```
 
 7. Solution:
-  
+
   ```sql
   SELECT surveys.species_id, year, AVG(weight) as mean_weight
-  FROM surveys 
-  JOIN species ON surveys.species_id = species.species_id 
+  FROM surveys
+  JOIN species ON surveys.species_id = species.species_id
   WHERE taxa = 'Rodent' GROUP BY surveys.species_id, year;
   ```
 
@@ -534,5 +541,3 @@ Have a look at the following questions; these questions are written in plain Eng
 - Many other functions like `COALESCE` and `NULLIF` can operate on individual values.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-

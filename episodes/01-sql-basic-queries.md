@@ -18,21 +18,22 @@ exercises: 5
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Writing my first query
+## Writing my First Query
 
-Let's start by using the **surveys** table. Here we have data on every
-individual that was captured at the site, including when they were captured,
-what plot they were captured on, their species ID, sex and weight in grams.
+Let’s begin by using the **surveys** table. This table contains data on every individual captured at the site, including when and where they were captured, their species ID, sex, and weight in grams.
 
-Let's write an SQL query that selects all of the columns in the surveys table. SQL queries can be written in the box located under the "Execute SQL" tab. Click on the right arrow above the query box to execute the query. (You can also use the keyboard shortcut "Cmd-Enter" on a Mac or "Ctrl-Enter" on a Windows machine to execute a query.) The results are displayed in the box below your query. If you want to display all of the columns in a table, use the wildcard \*.
+We’ll start by writing an SQL query to select all columns from the surveys table. In Adminer, click on the **SQL command** tab to open the query editor. You can type your SQL statement in the query box. Click the **Execute** button below the query box to run the query. (Alternatively, you can use the keyboard shortcut **Cmd-Enter** on a Mac or **Ctrl-Enter** on a Windows machine.) The results will appear in the box below your query.
+
+To select all columns from a table, use the asterisk (`*`) wildcard, like so:
 
 ```sql
 SELECT *
 FROM surveys;
 ```
-
 We have capitalized the words SELECT and FROM because they are SQL keywords.
 SQL is case insensitive, but it helps for readability, and is good style.
+
+You can type a new query in the box below the results, or click the **SQL command** button again to clear the previous output and start fresh.
 
 If we want to select a single column, we can type the column name instead of the wildcard \*.
 
@@ -49,28 +50,26 @@ SELECT year, month, day
 FROM surveys;
 ```
 
-### Limiting results
+### Limiting Results
 
-Sometimes you don't want to see all the results, you just want to get a sense of what's being returned. In that case, you can use a `LIMIT` clause. In particular, you would want to do this if you were working with large databases.
+Sometimes, you don’t need to view all the results—just a sample to understand what’s being returned. In such cases, particularly when working with large databases, you can use the `FETCH FIRST` clause in Oracle to limit the number of rows shown.
 
 ```sql
 SELECT *
 FROM surveys
-LIMIT 10;
+FETCH FIRST 10 ROWS ONLY;
 ```
 
-### Unique values
+### Unique Values
 
-If we want only the unique values so that we can quickly see what species have
-been sampled we use `DISTINCT`
+If we want to see only the unique values—for example, to get a quick look at which species have been sampled—we can use `DISTINCT`:
 
 ```sql
 SELECT DISTINCT species_id
 FROM surveys;
 ```
 
-If we select more than one column, then the distinct pairs of values are
-returned
+If you select more than one column, `DISTINCT` returns unique combinations of values across those columns:
 
 ```sql
 SELECT DISTINCT year, species_id
@@ -91,9 +90,7 @@ FROM surveys;
 When we run the query, the expression `weight / 1000` is evaluated for each
 row and appended in a new column to the table returned by the query. Note that
 the new column only exists in the query results—the surveys table itself is
-not changed. If we used the `INTEGER` data type for the weight field then
-integer division would have been done, to obtain the correct results in that
-case divide by `1000.0`. Expressions can use any fields, any arithmetic
+not changed. Expressions can use any fields, any arithmetic
 operators (`+`, `-`, `*`, and `/`) and a variety of built-in functions. For
 example, we could round the values to make them easier to read.
 
@@ -101,6 +98,14 @@ example, we could round the values to make them easier to read.
 SELECT plot_id, species_id, sex, weight, ROUND(weight / 1000, 2)
 FROM surveys;
 ```
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+### Importing data using *SQL Commands*
+
+In Adminer, you can import data using the **SQL Commands** tab. This allows you to execute SQL statements directly on the database. You can use this feature to create tables, insert data, and perform various operations on your database. For example, instead of importing the `.sql` files, you could copy and paste the contents of the `.sql` files into the SQL Commands tab and execute them to create the tables and insert the data.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
@@ -142,8 +147,12 @@ SELECT * FROM surveys
 WHERE year >= 2000;
 ```
 
-If we used the `TEXT` data type for the year, the `WHERE` clause should
-be `year >= '2000'`.
+If the `year` field is stored as a `CHAR` or `VARCHAR2` (i.e., as text), the condition should be:
+
+
+```sql
+WHERE year >= '2000'
+```
 
 We can use more sophisticated conditions by combining tests
 with `AND` and `OR`.  For example, suppose we want the data on *Dipodomys merriami*
@@ -167,6 +176,24 @@ SELECT *
 FROM surveys
 WHERE (species_id = 'DM') OR (species_id = 'DO') OR (species_id = 'DS');
 ```
+Alternatively, we can simplify this using the `IN` operator:
+
+```sql
+SELECT *
+FROM surveys
+WHERE species_id IN ('DM', 'DO', 'DS');
+```
+This is equivalent to the previous query, but is easier to read.
+
+You can also write a negative condition using `NOT`:
+
+```sql
+SELECT *
+FROM surveys
+WHERE NOT (species_id = 'DM');
+```
+
+This will return all rows where the species ID is not *Dipodomys merriami*.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
@@ -194,7 +221,7 @@ WHERE (plot_id = 1) AND (weight > 75);
 
 Now, let's combine the above queries to get data for the 3 *Dipodomys* species from
 the year 2000 on.  This time, let's use IN as one way to make the query easier
-to understand.  It is equivalent to saying `WHERE (species_id = 'DM') OR (species_id = 'DO') OR (species_id = 'DS')`, but reads more neatly:
+to understand:
 
 ```sql
 SELECT *
@@ -255,7 +282,7 @@ FROM species
 ORDER BY taxa DESC;
 ```
 
-`ASC` is the default.
+`ASC` is the default, so it can be omitted.
 
 We can also sort on several fields at once.
 To truly be alphabetical, we might want to order by genus then species.
@@ -270,16 +297,21 @@ ORDER BY genus ASC, species ASC;
 
 ## Challenge
 
-- Write a query that returns year, species\_id, and weight in kg from
-  the surveys table, sorted with the largest weights at the top.
+- Write a query that returns `year`, `species_id`, and `weight` in kg from the `surveys`
+table, sorted with the largest weights at the top. Please note that you may need to remove the `NULL` values from the `weight` column to ensure proper sorting. To do this, you can use the `WHERE` clause to filter out the `NULL` values, using `WHERE weight IS NOT NULL`.
 
 :::::::::::::::  solution
 
 ## Solution
 
 ```sql
+-- Get the year, species_id, and weight in kg
 SELECT year, species_id, weight / 1000
+-- from the surveys table
 FROM surveys
+-- only include rows where weight is not null
+WHERE weight IS NOT NULL
+-- sort by weight in descending order
 ORDER BY weight DESC;
 ```
 
@@ -355,5 +387,3 @@ ORDER BY species_id;
 - Adding comments in SQL helps keep complex queries understandable.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-

@@ -32,7 +32,7 @@ Key points:
   split-apply-combine)
 
 If you've written up a diagram of the data analysis pipeline (raw data ->
-clean data -> import and analyze -> results -> visualization), it can be
+clean data -> import and analyze -> results -> visualisation), it can be
 helpful to identify that you're now somewhere between clean data and analysis.
 
 ## Common Difficult Concepts
@@ -345,5 +345,3 @@ JOIN species ON surveys.species_id = species.species_id
 GROUP BY species.genus, surveys.plot_id
 ORDER BY surveys.plot_id, COUNT(*) DESC
 ```
-
-

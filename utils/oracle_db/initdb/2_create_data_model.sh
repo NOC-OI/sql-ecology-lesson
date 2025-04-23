@@ -2,7 +2,10 @@
 
 # Download init.sql
 curl -LJO https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/data/init.sql
-curl -LJO https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/data/surveys.sql
+curl -LJO https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/data/surveys1.sql
+curl -LJO https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/data/surveys2.sql
+curl -LJO https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/data/surveys3.sql
+curl -LJO https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/data/surveys4.sql
 curl -LJO https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/data/species.sql
 curl -LJO https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/data/plots.sql
 
@@ -11,10 +14,13 @@ NUM_USERS=20  # Same number as in generate_users.sh
 PREFIX="BODC"
 PDB="PORTAL_MAMMALS"
 PWD="bodc"
-sqlplus -s bodc/bodc@//localhost/${PDB} @init.sql
-sqlplus -s bodc/bodc@//localhost/${PDB} @surveys.sql
-sqlplus -s bodc/bodc@//localhost/${PDB} @species.sql
-sqlplus -s bodc/bodc@//localhost/${PDB} @plots.sql
+sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @init.sql
+sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @surveys1.sql
+sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @surveys2.sql
+sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @surveys3.sql
+sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @surveys4.sql
+sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @species.sql
+sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @plots.sql
 
 for i in $(seq 1 $NUM_USERS); do
   USER="${PREFIX}${i}"

@@ -25,24 +25,12 @@ workflow. <br>**These lessons assume no prior knowledge of the skills or tools.*
 
 This lesson requires:
 
-- Working copy of **DB Browser for SQLite for SQL**
+- Access to the **Oracle Database** created for this workshop
 - A dataset
 
-Follow the directions in the **[Setup](learners/setup.md)** section to download both the DB Browser for SQLite and the data to your computer and follow any installation instructions.
+Follow the directions in the **[Setup](learners/setup.md)** section to have access to the database links and credentials and to download the data to your computer and follow any installation instructions.
 
-Please make sure to install everything *before* working through this lesson.
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::  prereq
-
-## For Instructors
-
-If you are teaching this lesson in a workshop, please see the
-[Instructor notes](instructors/instructor-notes.md).
+Please make sure to test everything *before* working through this lesson.
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-

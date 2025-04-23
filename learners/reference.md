@@ -67,7 +67,7 @@ Glosario](https://glosario.carpentries.org/) (CC-BY-4.0)*
     [fields](#field).
 
 [[**relational_database**]{#relational-database}](https://glosario.carpentries.org/en/#relational_database)
-:   A database that organizes information into [tables](#table), each of
+:   A database that organises information into [tables](#table), each of
     which has a fixed set of named [fields](#field) (shown as columns)
     and a variable number of [records](#record) (shown as rows).
 
@@ -175,5 +175,3 @@ covered in this lesson.
         </tr>
     </tbody>
 </table>
-
-

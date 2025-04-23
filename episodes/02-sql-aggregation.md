@@ -167,15 +167,10 @@ We can not only alias column names, but also table names in the same way:
 
 ```sql
 SELECT *
-FROM surveys AS surv;
-```
-
-And again, the `AS` keyword is not required, so this works, too:
-
-```sql
-SELECT *
 FROM surveys surv;
 ```
+
+**Important**: In this case, you cannot use the `AS` keyword, because it is not allowed for table names.
 
 Aliasing table names can be helpful when working with queries that involve multiple tables; you will learn more about this later.
 
@@ -198,10 +193,15 @@ HAVING COUNT(species_id) > 10;
 The `HAVING` keyword works exactly like the `WHERE` keyword, but uses
 aggregate functions instead of database fields to filter.
 
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+### Using `HAVING` with Aliases
+
+If you are using **Oracle version 23a and later**, the `HAVING` clause can be
+simplified by using the alias of the aggregate function.
+
 You can use the `AS` keyword to assign an alias to a column or table, and refer
-to that alias in the `HAVING` clause.
-For example, in the above query, we can call the `COUNT(species_id)` by
-another name, like `occurrences`. This can be written this way:
+to that alias in the `HAVING` clause. For example, in the above query, we can call the `COUNT(species_id)` by another name, like `occurrences`. This can be written this way:
 
 ```sql
 SELECT species_id, COUNT(species_id) AS occurrences
@@ -209,6 +209,10 @@ FROM surveys
 GROUP BY species_id
 HAVING occurrences > 10;
 ```
+
+In this workshop, we are using **Oracle version 21**, so you will need to use the full expression. In the example above, you would need to use `HAVING COUNT(species_id) > 10` instead of `HAVING occurrences > 10`.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Note that in both queries, `HAVING` comes *after* `GROUP BY`. One way to
 think about this is: the data are retrieved (`SELECT`), which can be filtered
@@ -230,7 +234,7 @@ Write a query that returns, from the `species` table, the number of
 SELECT taxa, COUNT(*) AS n
 FROM species
 GROUP BY taxa
-HAVING n > 10;
+HAVING COUNT(*) > 10;
 ```
 
 :::::::::::::::::::::::::
@@ -239,26 +243,24 @@ HAVING n > 10;
 
 ## Saving Queries for Future Use
 
-It is not uncommon to repeat the same operation more than once, for example
-for monitoring or reporting purposes. SQL comes with a very powerful mechanism
-to do this by creating views. Views are a form of query that is saved in the database,
-and can be used to look at, filter, and even update information. One way to
-think of views is as a table, that can read, aggregate, and filter information
-from several places before showing it to you.
+It is not uncommon to repeat the same operation more than once—for example,
+for monitoring or reporting purposes. SQL provides a powerful mechanism for this
+by allowing you to create *views*. Views are saved queries that can be stored in the database,
+and can be used to inspect, filter, and sometimes even update data.
 
-Creating a view from a query requires us to add `CREATE VIEW viewname AS`
-before the query itself. For example, imagine that our project only covers
-the data gathered during the summer (May - September) of 2000.  That
-query would look like:
+You can think of a view as a virtual table: it presents a set of results derived
+from one or more real tables, potentially using aggregation or filtering.
+
+To create a view from a query, prepend the query with `CREATE VIEW viewname AS`.
+For example, suppose our project focuses only on data collected during the
+summer months (May to September) of the year 2000. That query would look like this:
 
 ```sql
 SELECT *
 FROM surveys
 WHERE year = 2000 AND (month > 4 AND month < 10);
 ```
-
-But we don't want to have to type that every time we want to ask a
-question about that particular subset of data. Hence, we can benefit from a view:
+Rather than writing this every time, we can define a view to store this subset:
 
 ```sql
 CREATE VIEW summer_2000 AS
@@ -267,13 +269,27 @@ FROM surveys
 WHERE year = 2000 AND (month > 4 AND month < 10);
 ```
 
-Using a view we will be able to access these results with a much shorter notation:
+Once the view is created, you can see it as a *new table* in the database on the left side bar. We can query it just like a regular table, using a shorter and more intuitive expression:
 
 ```sql
 SELECT *
 FROM summer_2000
 WHERE species_id = 'PE';
 ```
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+### Notes for Oracle Users
+
+- Oracle fully supports `CREATE VIEW`.
+- Views created using this syntax are **read-only by default** if they contain `JOIN`s, aggregation functions, or certain filters. However, simple views over a single table can be *updatable*.
+- If you attempt to recreate a view that already exists, Oracle will return an error. You must first drop the existing view with:
+
+```sql
+DROP VIEW summer_2000;
+```
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## What About NULL?
 
@@ -291,7 +307,7 @@ But if we try to be extra clever, and find the average ourselves,
 we might get tripped up:
 
 ```sql
-SELECT SUM(weight), COUNT(*), SUM(weight)/COUNT(*)
+SELECT SUM(weight), COUNT(weight), SUM(weight)/COUNT(*)
 FROM summer_2000
 WHERE species_id = 'PE';
 ```
@@ -358,5 +374,3 @@ WHERE sex != 'M' OR sex IS NULL;
 - Use a `VIEW` to access the result of a query as though it was a new table.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-

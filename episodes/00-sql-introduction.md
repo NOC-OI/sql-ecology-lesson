@@ -8,7 +8,7 @@ exercises: 5
 
 - Describe why relational databases are useful.
 - Create and populate a database from a text file.
-- Define SQLite data types.
+- Define Oracle data types.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -23,10 +23,10 @@ exercises: 5
 
 *Note: this should have been done by participants before the start of the workshop.*
 
-We use [DB Browser for SQLite](https://sqlitebrowser.org/) and the
-[Portal Project dataset](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459)
+We use [Adminer](https://oracle-access.shop/) and the
+[Portal Project dataset](https://nocacuk-my.sharepoint.com/:f:/g/personal/tobfer_noc_ac_uk/Episk-ovbHdAv-CwEsJppjcB4Sei4kId3rGezf2qZiv8Qw?e=bAGdol)
 throughout this lesson. See [Setup](../learners/setup.md) for
-instructions on how to download the data, and also how to install DB Browser for SQLite.
+instructions on how to download the data, and also how to have access to the database credentials
 
 ## Motivation
 
@@ -34,7 +34,7 @@ To start, let's orient ourselves in our project workflow.  Previously,
 we used Excel and OpenRefine to go from messy, human created data
 to cleaned, computer-readable data.  Now we're going to move to the next piece
 of the data workflow, using the computer to read in our data, and then
-use it for analysis and visualization.
+use it for analysis and visualisation.
 
 ### What is SQL?
 
@@ -133,32 +133,39 @@ Using a relational database serves several purposes.
 There are different database management systems to work with relational databases
 such as SQLite, MySQL, PostgreSQL, MSSQL Server, and many more. Each of them differ
 mainly based on their scalability, but they all share the same core principles of
-relational databases. In this lesson, we use SQLite to introduce you to SQL and
-data retrieval from a relational database.
+relational databases. In this lesson, we use Oracle, which is a commercial database
+management system. This is the database system used by many large companies,
+like National Oceanography Centre (NOC).
 
 ### Relational databases
 
-Let's look at a pre-existing database, the `portal_mammals.sqlite`
-file from the Portal Project dataset that we downloaded during
-[Setup](../learners/setup.md). In DB Browser for SQLite, click on the "Open Database" button, select the portal\_mammals.sqlite file, and click "Open" to open the database.
+Let's look at a pre-existing database, using the main BODC user that we described in the
+[Setup](../learners/setup.md). In [Adminer link](https://oracle-access.shop/), use the following credentials:
 
-You can see the tables in the database by looking at the left hand side of the
-screen under Database Structure tab. Here you will see a list under "Tables." Each item listed here corresponds to one of the `csv` files
+- **System**: Oracle (beta)
+- **Server**: `//oracle-service.default.svc.cluster.local:1521/PORTAL_MAMMALS`
+- **Username**: `BODC`
+- **Password**: `bodc`
+
+Once you log in, you will see a screen with a side bar on the left and a main panel on the right.
+On the left side bar, please set **DB** to `USERS` and **Schema** to `BODC`. This will show you the tables in the database on the main panel and allows us to browse the data in those tables.
+
+You can see the tables in the database by looking at the left side bar. Here you will see a list under with some "Tables" starting with "select" before the name of the table." Each item listed here corresponds to one of the `csv` files
 we were exploring earlier. To see the contents of any table, right-click on it, and
-then click the "Browse Table" from the menu, or select the "Browse Data" tab next to the "Database Structure" tab and select the wanted table from the dropdown named "Table". This will
+then click the "Select data" from the main panel. This will
 give us a view that we're used to - a copy of the table. Hopefully this
 helps to show that a database is, in some sense, only a collection of tables,
 where there's some value in the tables that allows them to be connected to each
 other (the "related" part of "relational database").
 
-The "Database Structure" tab also provides some metadata about each table. If you click on the down arrow next to a table name, you will see information about the columns, which in databases are referred to as "fields," and their assigned data types.
+On the main panel, if you click on "Show Structure" you will see some metadata about each table, like information about the columns, which in databases are referred to as "fields," and their assigned data types.
 (The rows of a database table
 are called *records*.) Each field contains
 one variety or type of data, often numbers or text. You can see in the
-`surveys` table that most fields contain numbers (BIGINT, or big integer, and FLOAT, or floating point numbers/decimals) while the `species`
-table is entirely made up of text fields.
+`surveys` table that most fields contain numbers (NUMBER and FLOAT, or floating point numbers/decimals) while the `species`
+table is entirely made up of text fields (VARCHAR).
 
-The "Execute SQL" tab is blank now - this is where we'll be typing our queries
+The "SQL Command" option on the left side bar is blank now - this is where we'll be typing our queries
 to retrieve information from the database tables.
 
 To summarize:
@@ -181,84 +188,82 @@ To summarize:
 
 ### Import
 
-Before we get started with writing our own queries, we'll create our own
-database.  We'll be creating this database from the three `csv` files
-we downloaded earlier.  Close the currently open database (**File > Close Database**) and then
-follow these instructions:
+Before we get started with writing our own queries, we are going to start work with your own empty databases (just the tables are already created). We'll be seeding the database using the data from teh three `csv` files we downloaded earlier. However, as it is not possible to directly open a csv file on a Oracle Database, on the same download folder you have access to the `sql`files that has the convertion from the csv to sql commands. Logout in the current database (button in the upper right part of the screen) and follow these instructions:
 
-1. Start a New Database
-  - Click the **New Database** button
-  - Give a name and click Save to create the database in the opened folder
-  - In the "Edit table definition" window that pops up, click cancel as we will be importing tables, not creating them from scratch
-2. Select **File >> Import >> Table from CSV file...**
-3. Choose `surveys.csv` from the data folder we downloaded and click **Open**.
-4. Give the table a name that matches the file name (`surveys`), or use the default
-5. If the first row has column headings, be sure to check the box next to "Column names in first line".
-6. Be sure the field separator and quotation options are correct. If you're not sure which options are correct, test some of the options until the preview at the bottom of the window looks right.
-7. Press **OK**, you should subsequently get a message that the table was imported.
-8. Back on the Database Structure tab, you should now see the table listed. Right click on the table name and choose **Modify Table**, or click on the **Modify Table** button just under the tabs and above the table list.
-9. Click **Save** if asked to save all pending changes.
-10. In the center panel of the window that appears, set the data types for each field using the suggestions in the table below (this includes fields from the `plots` and `species` tables also).
-11. Finally, click **OK** one more time to confirm the operation. Then click the **Write Changes** button to save the database.
-
-| Field                                                 | Data Type                                                                                                | Motivation                                                              | Table(s)         | 
-| ----------------------------------------------------- | :------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ---------------- |
-| day                                                   | INTEGER                                                                                                  | Having data as numeric allows for meaningful arithmetic and comparisons | surveys          | 
-| genus                                                 | TEXT                                                                                                     | Field contains text data                                                | species          | 
-| hindfoot\_length                                       | REAL                                                                                                     | Field contains measured numeric data                                    | surveys          | 
-| month                                                 | INTEGER                                                                                                  | Having data as numeric allows for meaningful arithmetic and comparisons | surveys          | 
-| plot\_id                                               | INTEGER                                                                                                  | Field contains numeric data                                             | plots, surveys   | 
-| plot\_type                                             | TEXT                                                                                                     | Field contains text data                                                | plots            | 
-| record\_id                                             | INTEGER                                                                                                  | Field contains numeric data                                             | surveys          | 
-| sex                                                   | TEXT                                                                                                     | Field contains text data                                                | surveys          | 
-| species\_id                                            | TEXT                                                                                                     | Field contains text data                                                | species, surveys | 
-| species                                               | TEXT                                                                                                     | Field contains text data                                                | species          | 
-| taxa                                                  | TEXT                                                                                                     | Field contains text data                                                | species          | 
-| weight                                                | REAL                                                                                                     | Field contains measured numerical data                                  | surveys          | 
-| year                                                  | INTEGER                                                                                                  | Allows for meaningful arithmetic and comparisons                        | surveys          | 
+1. Connect to the new database. Please use the credentials provided by your instructor.
+2. Set **DB** to `USERS` and **Schema** to `BODC`. After that, you should see the tables in the database on the main panel. You can see that all tables are empty.
+3. Click on the **Import** link in the left sidebar.
+4. We are going to update the *surveys* data. However, because the number of the records and the limitation of the servers, we broke the file in for parts: `surveys1.sql`, `surveys2.sql`, `surveys3.sql`, `surveys4.sql`. You are going to repeat the operation described on **5** four times, one for each file.
+5. On the **File upload**, choose `surveys1.sql` (or 2, 3, 4) from the data folder we downloaded and click **Execute**. You are going to see a message that the table was imported.
+6. Now, click on **select SURVEYS >> Select data** to see the data in the table.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
 ### Challenge
 
-- Import the `plots` and `species` tables
-  
+- Import data into `plots` and `species` tables
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-You can also use this same approach to append new fields to an existing table.
 
-### Adding fields to existing tables
+### Information about the tables
 
-1. Go to the "Database Structure" tab, right click on the table you'd like to add data to, and choose **Modify Table**, or click on the **Modify Table** just under the tabs and above the table.
-2. Click the **Add Field** button to add a new field and assign it a data type.
 
-### Data types {#datatypes}
+The following table shows the fields in each of the tables, their data types, and the motivation for their data type.
 
-| Data type                                             | Description                                                                                              | 
-| ----------------------------------------------------- | :------------------------------------------------------------------------------------------------------- |
-| CHARACTER(n)                                          | Character string. Fixed-length n                                                                         | 
-| VARCHAR(n) or CHARACTER VARYING(n)                    | Character string. Variable length. Maximum length n                                                      | 
-| BINARY(n)                                             | Binary string. Fixed-length n                                                                            | 
-| BOOLEAN                                               | Stores TRUE or FALSE values                                                                              | 
-| VARBINARY(n) or BINARY VARYING(n)                     | Binary string. Variable length. Maximum length n                                                         | 
-| INTEGER(p)                                            | Integer numerical (no decimal).                                                                          | 
-| SMALLINT                                              | Integer numerical (no decimal).                                                                          | 
-| INTEGER                                               | Integer numerical (no decimal).                                                                          | 
-| BIGINT                                                | Integer numerical (no decimal).                                                                          | 
-| DECIMAL(p,s)                                          | Exact numerical, precision p, scale s.                                                                   | 
-| NUMERIC(p,s)                                          | Exact numerical, precision p, scale s. (Same as DECIMAL)                                                 | 
-| FLOAT(p)                                              | Approximate numerical, mantissa precision p. A floating number in base 10 exponential notation.          | 
-| REAL                                                  | Approximate numerical                                                                                    | 
-| FLOAT                                                 | Approximate numerical                                                                                    | 
-| DOUBLE PRECISION                                      | Approximate numerical                                                                                    | 
-| DATE                                                  | Stores year, month, and day values                                                                       | 
-| TIME                                                  | Stores hour, minute, and second values                                                                   | 
-| TIMESTAMP                                             | Stores year, month, day, hour, minute, and second values                                                 | 
-| INTERVAL                                              | Composed of a number of integer fields, representing a period of time, depending on the type of interval | 
-| ARRAY                                                 | A set-length and ordered collection of elements                                                          | 
-| MULTISET                                              | A variable-length and unordered collection of elements                                                   | 
-| XML                                                   | Stores XML data                                                                                          | 
+
+
+| Field                                                 | Data Type                                                                                                | Motivation                                                              | Table(s)         |
+| ----------------------------------------------------- | :------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ---------------- |
+| day                                                   | NUMBER                                                                                                  | Having data as numeric allows for meaningful arithmetic and comparisons | surveys          |
+| genus                                                 | VARCHAR2(50)                                                                                                     | Field contains text data                                                | species          |
+| hindfoot\_length                                       | FLOAT(126,)                                                                                                     | Field contains measured numeric data                                    | surveys          |
+| month                                                 | NUMBER                                                                                                  | Having data as numeric allows for meaningful arithmetic and comparisons | surveys          |
+| plot\_id                                               | NUMBER                                                                                                  | Field contains numeric data                                             | plots, surveys   |
+| plot\_type                                             | VARCHAR2(100)                                                                                                     | Field contains text data                                                | plots            |
+| record\_id                                             | NUMBER                                                                                                  | Field contains numeric data                                             | surveys          |
+| sex                                                   | VARCHAR2(1)                                                                                                     | Field contains text data                                                | surveys          |
+| species\_id                                            | VARCHAR2(10)                                                                                                     | Field contains text data                                                | species, surveys |
+| species                                               | VARCHAR2(50)                                                                                                     | Field contains text data                                                | species          |
+| taxa                                                  | VARCHAR2(20)                                                                                                     | Field contains text data                                                | species          |
+| weight                                                | FLOAT(126,)                                                                                                     | Field contains measured numerical data                                  | surveys          |
+| year                                                  | NUMBER                                                                                                  | Allows for meaningful arithmetic and comparisons                        | surveys          |
+
+
+### Modifying/Adding fields to existing tables
+
+You can also use this same approach to modify/append new fields to an existing table.
+
+
+1. To alter table, go  **select SURVEYS >> Alter table**. This will show you the fields in the table and their data types and will allow you to change them.
+2. In the same option, you can add an item, by clicking in the **+** icon. This will allow you to add a new field and assign it a data type.
+3. You can also delete a field by clicking on the **x** icon. This will delete the field from the table.
+4. To save the changes, click on the **Save** button in the bottom right corner of the main panel.
+
+### Data Types {#datatypes}
+
+| Data Type                     | Description                                                                 |
+|------------------------------|------------------------------------------------------------------------------|
+| `CHAR(n)`                    | Fixed-length character string. Maximum size is 2000 bytes.                   |
+| `VARCHAR2(n)`                | Variable-length character string. Maximum size is 4000 bytes.               |
+| `NCHAR(n)`                   | Fixed-length national character set string.                                 |
+| `NVARCHAR2(n)`               | Variable-length national character set string.                              |
+| `NUMBER(p, s)`               | Numeric value with precision `p` and scale `s`. Can represent integers and decimals. |
+| `FLOAT`                      | Approximate numeric with binary precision. Synonym for `NUMBER`.            |
+| `BINARY_FLOAT`               | 32-bit floating point number (approximate numeric).                         |
+| `BINARY_DOUBLE`              | 64-bit floating point number (approximate numeric).                         |
+| `DATE`                       | Stores date and time to the second (YYYY-MM-DD HH24:MI:SS).                 |
+| `TIMESTAMP`                  | More precise date-time, optionally with fractional seconds and time zone.   |
+| `INTERVAL YEAR TO MONTH`     | Represents a period of time in years and months.                            |
+| `INTERVAL DAY TO SECOND`     | Represents a period of time in days, hours, minutes, and seconds.           |
+| `CLOB`                       | Character Large Object—used to store large text data.                       |
+| `BLOB`                       | Binary Large Object—used to store large binary data.                        |
+| `BFILE`                      | A pointer to binary file stored outside the database.                       |
+| `RAW(n)`                     | Variable-length binary or byte data. Maximum size is 2000 bytes.            |
+| `LONG`                       | Variable-length character data (deprecated; use `CLOB` instead).            |
+| `XMLTYPE`                    | Used to store and query XML data.                                           |
+
 
 ### SQL Data Type Quick Reference {#datatypediffs}
 
@@ -266,15 +271,17 @@ Different databases offer different choices for the data type definition.
 
 The following table shows some of the common names of data types between the various database platforms:
 
-| Data type                                             | Access                                                                                                   | SQLServer                                                               | Oracle           | MySQL         | PostgreSQL    | 
-| :---------------------------------------------------- | :------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- | :--------------- | :------------ | :------------ |
-| boolean                                               | Yes/No                                                                                                   | Bit                                                                     | Byte             | N/A           | Boolean       | 
-| integer                                               | Number (integer)                                                                                         | Int                                                                     | Number           | Int / Integer | Int / Integer | 
-| float                                                 | Number (single)                                                                                          | Float / Real                                                            | Number           | Float         | Numeric       | 
-| currency                                              | Currency                                                                                                 | Money                                                                   | N/A              | N/A           | Money         | 
-| string (fixed)                                        | N/A                                                                                                      | Char                                                                    | Char             | Char          | Char          | 
-| string (variable)                                     | Text (\<256) / Memo (65k+)                                                                                | Varchar                                                                 | Varchar2         | Varchar       | Varchar       | 
-| binary object	OLE Object Memo	Binary (fixed up to 8K) | Varbinary (\<8K)                                                                                          | Image (\<2GB)	Long                                                       | Raw	Blob         | Text	Binary   | Varbinary     | 
+Data Type | MS Access | SQL Server | Oracle | MySQL | PostgreSQL | SQLite
+Boolean | Yes/No | BIT | No native boolean* | No native boolean** | BOOLEAN | No native boolean***
+Integer | Number (Integer) | INT / INTEGER | NUMBER | INT / INTEGER | INT / INTEGER | INTEGER
+Float / Real | Number (Single) | FLOAT / REAL | FLOAT / NUMBER | FLOAT | NUMERIC / REAL | REAL / FLOAT
+Currency / Money | Currency | MONEY | No native type | No native type | MONEY | No native type
+String (fixed length) | — | CHAR(n) | CHAR(n) | CHAR(n) | CHAR(n) | TEXT (no strict typing)
+String (variable length) | Text (<256) / Memo (65K+) | VARCHAR(n) | VARCHAR2(n) | VARCHAR(n) | VARCHAR(n) / TEXT | TEXT
+Large text | Memo | TEXT | CLOB | TEXT | TEXT | TEXT
+Binary (fixed) | — | BINARY(n) | RAW(n) | BINARY(n) | BYTEA | No strict support
+Binary (variable / large) | OLE Object | VARBINARY, IMAGE | BLOB, LONG RAW | BLOB | BYTEA, BLOB | BLOB
+Date/Time | Date/Time | DATETIME, SMALLDATETIME | DATE, TIMESTAMP | DATETIME, TIMESTAMP | TIMESTAMP / DATE | DATETIME, TEXT
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
@@ -283,5 +290,3 @@ The following table shows some of the common names of data types between the var
 - Different database management systems (DBMS) use slightly different vocabulary, but they are all based on the same ideas.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-

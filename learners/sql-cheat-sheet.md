@@ -88,12 +88,12 @@ Creating Tables
 Create tables by specifying column names and types.
 Include primary and foreign key relationships and other constraints.
 
-    CREATE TABLE survey(
-            taken   INTEGER NOT NULL,
-            person  TEXT,
-            quant   REAL NOT NULL,
-            PRIMARY KEY(taken, quant),
-            FOREIGN KEY(person) REFERENCES person(ident)
+    CREATE TABLE survey (
+            taken   NUMBER NOT NULL,
+            person  VARCHAR2(255),
+            quant   NUMBER NOT NULL,
+            CONSTRAINT pk_survey PRIMARY KEY (taken, quant),
+            CONSTRAINT fk_person FOREIGN KEY (person) REFERENCES person(ident)
     );
 
 Transactions
@@ -102,10 +102,10 @@ Transactions
 Put multiple queries in a transaction to ensure they are ACID
 (atomic, consistent, isolated, and durable):
 
-    BEGIN TRANSACTION;
+    BEGIN
       DELETE FROM table_name_1 WHERE condition;
       INSERT INTO table_name_2 values(...);
-    END TRANSACTION;
+    END;
 
 Programming
 -----------
@@ -123,12 +123,22 @@ Execute queries in a general-purpose programming language by:
 
 Python example:
 
-    import sqlite3
-    connection = sqlite3.connect("database_name")
+    import cx_Oracle
+
+    # Create a connection to the Oracle database
+    connection = cx_Oracle.connect("username", "password", "hostname:port/service_name")
+
+    # Create a cursor
     cursor = connection.cursor()
-    cursor.execute("...query...")
-    for r in cursor.fetchall():
-        ...process result r...
+
+    # Execute a query
+    cursor.execute("SELECT * FROM table_name")
+
+    # Fetch results
+    for row in cursor.fetchall():
+        # Process each result row
+        print(row)
+
+    # Close the cursor and connection
     cursor.close()
     connection.close()
-
