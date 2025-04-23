@@ -1,0 +1,20 @@
+services:
+  oracle:
+    image: gvenzl/oracle-xe:latest
+    environment:
+      # ORACLE_PASSWORD: my_password
+      # ORACLE_DATABASE: portal_mammals
+      ORACLE_RANDOM_PASSWORD: true
+      # APP_USER: my_user
+      # APP_USER_PASSWORD: my_password
+    ports:
+      - 1521:1521
+    volumes:
+      - ./initdb:/container-entrypoint-initdb.d
+  adminer:
+    build:
+      context: .  # assumes your Dockerfile is in ./adminer
+    ports:
+      - 8080:80
+    depends_on:
+      - oracle
