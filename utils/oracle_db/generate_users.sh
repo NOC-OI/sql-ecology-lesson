@@ -1,0 +1,20 @@
+#!/bin/bash
+
+NUM_USERS=20
+PREFIX="BODC"
+PDB="PORTAL_MAMMALS"
+OUTPUT="initdb/1_create_users.sql"
+
+echo "ALTER SESSION SET CONTAINER = $PDB;" > $OUTPUT
+echo "CREATE USER BODC IDENTIFIED BY bodc QUOTA UNLIMITED ON USERS;" >> $OUTPUT
+echo "GRANT CONNECT, RESOURCE TO BODC;" >> $OUTPUT
+
+for i in $(seq 1 $NUM_USERS); do
+  USER="${PREFIX}${i}"
+  PASSWORD="bodc${i}"
+  echo "CREATE USER $USER IDENTIFIED BY $PASSWORD QUOTA UNLIMITED ON USERS;" >> $OUTPUT
+  echo "GRANT CONNECT, RESOURCE TO $USER;" >> $OUTPUT
+  echo "" >> $OUTPUT
+done
+
+echo "User creation script written to $OUTPUT"
