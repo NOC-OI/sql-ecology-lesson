@@ -12,14 +12,14 @@ curl -LJO https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads
 
 NUM_USERS=20  # Same number as in generate_users.sh
 PREFIX="BODC"
-PDB="PORTAL_MAMMALS"
+PDB="DIGIOCEAN"
 PWD="bodc"
 sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @init.sql
 sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @surveys1.sql
 sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @surveys2.sql
 sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @surveys3.sql
 sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @surveys4.sql
-sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @species.sql
+# sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @species.sql
 sqlplus -s ${PREFIX}/${PWD}@//localhost/${PDB} @plots.sql
 
 for i in $(seq 1 $NUM_USERS); do
@@ -33,6 +33,9 @@ done
 
 # Clean up
 rm init.sql
-rm surveys.sql
+rm surveys1.sql
+rm surveys2.sql
+rm surveys3.sql
+rm surveys4.sql
 rm species.sql
 rm plots.sql

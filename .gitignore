@@ -3,6 +3,7 @@ episodes/*html
 site/*
 !site/README.md
 
+*tnsnames.ora*
 # History files
 .Rhistory
 .Rapp.history

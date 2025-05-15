@@ -1,0 +1,16 @@
+## general tnsnames
+## based on livyum tnsnames and Windows tnsnames content
+
+LIVDV1 =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS =
+        (PROTOCOL = TCP)
+        (HOST = livdbase03.noc.ac.uk)
+        (PORT = 1526)
+      )
+    )
+    (CONNECT_DATA =
+      (SID = LIVDV1)
+    )
+  )

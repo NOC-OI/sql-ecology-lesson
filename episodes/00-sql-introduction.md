@@ -21,12 +21,17 @@ exercises: 5
 
 ### Setup
 
-*Note: this should have been done by participants before the start of the workshop.*
+> **Note:** Participants should complete this setup *before* the start of the workshop.
 
-We use [Adminer](https://oracle-access.shop/) and the
-[Portal Project dataset](https://nocacuk-my.sharepoint.com/:f:/g/personal/tobfer_noc_ac_uk/Episk-ovbHdAv-CwEsJppjcB4Sei4kId3rGezf2qZiv8Qw?e=bAGdol)
-throughout this lesson. See [Setup](../learners/setup.md) for
-instructions on how to download the data, and also how to have access to the database credentials
+This lesson uses [SQL Developer](https://www.oracle.com/uk/database/sqldeveloper/) along with the [Portal Project dataset](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459).
+
+Please refer to the [Setup instructions](../learners/setup.md) for detailed guidance on:
+
+* Downloading and extracting the dataset.
+* Installing and configuring SQL Developer.
+* Accessing the Oracle database, including how to obtain the necessary credentials.
+
+Make sure you’ve completed all steps before attending the session, as we will begin working with the data and database right away.
 
 ## Motivation
 
@@ -139,42 +144,36 @@ like National Oceanography Centre (NOC).
 
 ### Relational databases
 
-Let's look at a pre-existing database, using the main BODC user that we described in the
-[Setup](../learners/setup.md). In [Adminer link](https://oracle-access.shop/), use the following credentials:
+Let’s explore the data available in the database. Once you have your credentials, connect to the database by following these steps:
 
-- **System**: Oracle (beta)
-- **Server**: `//oracle-service.default.svc.cluster.local:1521/PORTAL_MAMMALS`
-- **Username**: `BODC`
-- **Password**: `bodc`
+#### 1. Create a New Connection in SQL Developer
 
-Once you log in, you will see a screen with a side bar on the left and a main panel on the right.
-On the left side bar, please set **DB** to `USERS` and **Schema** to `BODC`. This will show you the tables in the database on the main panel and allows us to browse the data in those tables.
+1. Open **SQL Developer** and click the green `+` icon to create a new connection.
+2. Enter the following details:
 
-You can see the tables in the database by looking at the left side bar. Here you will see a list under with some "Tables" starting with "select" before the name of the table." Each item listed here corresponds to one of the `csv` files
-we were exploring earlier. To see the contents of any table, right-click on it, and
-then click the "Select data" from the main panel. This will
-give us a view that we're used to - a copy of the table. Hopefully this
-helps to show that a database is, in some sense, only a collection of tables,
-where there's some value in the tables that allows them to be connected to each
-other (the "related" part of "relational database").
+   * **Name**: *PORTAL MAMMALS* (or any name you prefer)
+   * **Username**: (provided by your instructor)
+   * **Password**: (provided by your instructor)
+   * **Connection Type**: `TNS`
+   * **Network Alias**: `LIVDV1`
+3. Click **Connect**.
 
-On the main panel, if you click on "Show Structure" you will see some metadata about each table, like information about the columns, which in databases are referred to as "fields," and their assigned data types.
-(The rows of a database table
-are called *records*.) Each field contains
-one variety or type of data, often numbers or text. You can see in the
-`surveys` table that most fields contain numbers (NUMBER and FLOAT, or floating point numbers/decimals) while the `species`
-table is entirely made up of text fields (VARCHAR).
+Once connected, you’ll see a list of schemas on the left panel. Select the `DIGIOCEAN` schema. This will display the database tables in the main panel: **PLOTS**, **SPECIES**, and **SURVEYS**. Each table corresponds to one of the CSV files you explored earlier.
 
-The "SQL Command" option on the left side bar is blank now - this is where we'll be typing our queries
-to retrieve information from the database tables.
+To view the contents of a table, click on the table name, then go to the **Data** tab. This provides a spreadsheet-like view of the table contents.
+
+This visual structure helps to reinforce a key idea: a database is essentially a collection of tables, where the "relational" part comes from the links—or **relationships**—between those tables.
+
+If you click the **Columns** tab, you’ll see metadata about the table: column names (also known as *fields*), their data types, and other information. For example:
+
+* The **surveys** table contains mostly numerical data (e.g., `NUMBER`, `FLOAT`).
+* The **species** table contains mostly text fields (`VARCHAR`).
 
 To summarize:
 
-- Relational databases store data in tables with fields (columns) and records
-  (rows)
-- Data in tables has types, and all values in a field have
-  the same type ([list of data types](#datatypes))
-- Queries let us look up data or make calculations based on columns
+* A **relational database** stores data in **tables** made up of **fields** (columns) and **records** (rows).
+* Each field stores only one type of data, and all entries in a field share the same data type.
+* You can use **queries** to extract and analyze data, often by joining tables together based on shared information.
 
 ### Database Design
 
@@ -188,30 +187,26 @@ To summarize:
 
 ### Import
 
-Before we get started with writing our own queries, we are going to start work with your own empty databases (just the tables are already created). We'll be seeding the database using the data from teh three `csv` files we downloaded earlier. However, as it is not possible to directly open a csv file on a Oracle Database, on the same download folder you have access to the `sql`files that has the convertion from the csv to sql commands. Logout in the current database (button in the upper right part of the screen) and follow these instructions:
+In this workshop, we’ve already imported data into the **PLOTS** and **SURVEYS** tables. The **SPECIES** table, however, is intentionally left empty so you can practice importing data yourself.
 
-1. Connect to the new database. Please use the credentials provided by your instructor.
-2. Set **DB** to `USERS` and **Schema** to `BODC`. After that, you should see the tables in the database on the main panel. You can see that all tables are empty.
-3. Click on the **Import** link in the left sidebar.
-4. We are going to update the *surveys* data. However, because the number of the records and the limitation of the servers, we broke the file in for parts: `surveys1.sql`, `surveys2.sql`, `surveys3.sql`, `surveys4.sql`. You are going to repeat the operation described on **5** four times, one for each file.
-5. On the **File upload**, choose `surveys1.sql` (or 2, 3, 4) from the data folder we downloaded and click **Execute**. You are going to see a message that the table was imported.
-6. Now, click on **select SURVEYS >> Select data** to see the data in the table.
+There are two common ways to import data into a database using **SQL Developer**:
 
-:::::::::::::::::::::::::::::::::::::::  challenge
+1. **Using SQL scripts** (e.g., `.sql` files with `INSERT` statements).
+2. **Using the graphical interface (GUI) to import the `csv` file** — this is what we’ll use.
 
-### Challenge
+To import the `species.csv` file:
 
-- Import data into `plots` and `species` tables
+1. Right-click on the **SPECIES** table.
+2. Select **Import Data**.
+3. In the window that opens, browse to select the `species.csv` file.
+4. Click **Next** through the prompts until you reach **Finish**.
+5. Monitor the import process in the bottom panel. When it’s complete, you’ll see a success message.
 
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
+And now we can start writing our own queries!
 
 ### Information about the tables
 
-
 The following table shows the fields in each of the tables, their data types, and the motivation for their data type.
-
 
 
 | Field                                                 | Data Type                                                                                                | Motivation                                                              | Table(s)         |
@@ -233,15 +228,27 @@ The following table shows the fields in each of the tables, their data types, an
 
 ### Modifying/Adding fields to existing tables
 
-You can also use this same approach to modify/append new fields to an existing table.
+You can also modify existing tables to add, edit, or remove fields (columns) using the SQL Developer interface.
 
+1. **Edit the Table**:
+   Right-click on the table name in the left-hand panel and select **Edit**. This opens a new window displaying the table structure.
 
-1. To alter table, go  **select SURVEYS >> Alter table**. This will show you the fields in the table and their data types and will allow you to change them.
-2. In the same option, you can add an item, by clicking in the **+** icon. This will allow you to add a new field and assign it a data type.
-3. You can also delete a field by clicking on the **x** icon. This will delete the field from the table.
-4. To save the changes, click on the **Save** button in the bottom right corner of the main panel.
+2. **Add a New Field**:
+   Click the **`+` (Add Column)** icon to insert a new field. You’ll be prompted to:
+
+   * Enter a name for the new column.
+   * Choose an appropriate data type (e.g., `VARCHAR`, `NUMBER`, etc.).
+
+3. **Delete a Field**:
+   To remove a column, click the **`x` (Delete Column)** icon next to the field you want to remove.
+
+4. **Save Your Changes**:
+   Once you’re done, click **OK** in the bottom-right corner of the window to apply the changes to the table.
+
 
 ### Data Types {#datatypes}
+
+You can see below a list of data types used in Oracle databases. The data types are used to define the type of data that can be stored in a field. Each data type has its own characteristics and limitations.
 
 | Data Type                     | Description                                                                 |
 |------------------------------|------------------------------------------------------------------------------|
@@ -265,11 +272,8 @@ You can also use this same approach to modify/append new fields to an existing t
 | `XMLTYPE`                    | Used to store and query XML data.                                           |
 
 
-### SQL Data Type Quick Reference {#datatypediffs}
-
-Different databases offer different choices for the data type definition.
-
-The following table shows some of the common names of data types between the various database platforms:
+As we mention before, there are other database management systems (DBMS) that use
+different data types. The data types used in Oracle are not the same as those used in other DBMSs. The following table shows some of the common names of data types between the various database platforms:
 
 Data Type | MS Access | SQL Server | Oracle | MySQL | PostgreSQL | SQLite
 Boolean | Yes/No | BIT | No native boolean* | No native boolean** | BOOLEAN | No native boolean***

@@ -19,6 +19,10 @@ SQLite database file (portal\_mammals.sqlite) as well as three .csv files
 
 **Note** that the figshare download is an archive (.zip) file that rudely explodes all of the files into your current directory.
 
+## Oracle Databases
+
+As this lesson as adapted to use Oracle databases, it was also added to this repo some files to create a local Oracle database for testing purposes. If you want to use it, please follow the instructions in the `utils/oracle_db` folder.
+
 ## Motivation and Framing
 
 See this slide deck as a sample intro for the lesson:
@@ -41,8 +45,8 @@ helpful to identify that you're now somewhere between clean data and analysis.
 - Data import
   - Not necessarily a concept, but we always have at least a handful of people that
     struggle with the table import step -- especially in the virtual context with window changing
-  - Data type options in SQLite (Integer, text, blob, real, numeric) when importing
-    from CSV. (Maybe have a table of SQLite date types in the student material).
+  - Data type options in Oracle (Integer, text, blob, real, numeric) when importing
+    from CSV. (Maybe have a table of Oracle date types in the student material).
 - Good to make sure that a comparison is drawn between joins in different
   languages, e.g. SQL vs tidyverse
 - HAVING, and why it's different to WHERE.... - especially when teaching online
@@ -53,9 +57,8 @@ helpful to identify that you're now somewhere between clean data and analysis.
 
 ### 00-sql-introduction
 
-- Introduce relational databases, database management systems, DB Browser for
-  SQLite, and the Portal dataset
-- Import .csv files into sqlite
+- Introduce relational databases, database management systems, SQL Developer for Oracle, and the Portal dataset
+- Import .csv files into Oracle database
 - Structuring data for database import
 - Discuss the different SQL data types
 

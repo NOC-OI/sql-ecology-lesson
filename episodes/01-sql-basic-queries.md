@@ -22,7 +22,7 @@ exercises: 5
 
 Let’s begin by using the **surveys** table. This table contains data on every individual captured at the site, including when and where they were captured, their species ID, sex, and weight in grams.
 
-We’ll start by writing an SQL query to select all columns from the surveys table. In Adminer, click on the **SQL command** tab to open the query editor. You can type your SQL statement in the query box. Click the **Execute** button below the query box to run the query. (Alternatively, you can use the keyboard shortcut **Cmd-Enter** on a Mac or **Ctrl-Enter** on a Windows machine.) The results will appear in the box below your query.
+We’ll start by writing an SQL query to select all columns from the surveys table. In **SQL Developer**, right click on the `DIGIOCEAN` name on the left side bar. And then click in **Open SQL Worksheet**. You can type your SQL statement in the query box and then click on the **>** button to run the query. (Alternatively, you can use the keyboard shortcut **Cmd-Enter** on a Mac or **Ctrl-Enter** on a Windows/Unix machine.) The results will appear in the box below your query.
 
 To select all columns from a table, use the asterisk (`*`) wildcard, like so:
 
@@ -32,8 +32,6 @@ FROM surveys;
 ```
 We have capitalized the words SELECT and FROM because they are SQL keywords.
 SQL is case insensitive, but it helps for readability, and is good style.
-
-You can type a new query in the box below the results, or click the **SQL command** button again to clear the previous output and start fresh.
 
 If we want to select a single column, we can type the column name instead of the wildcard \*.
 
@@ -103,7 +101,7 @@ FROM surveys;
 
 ### Importing data using *SQL Commands*
 
-In Adminer, you can import data using the **SQL Commands** tab. This allows you to execute SQL statements directly on the database. You can use this feature to create tables, insert data, and perform various operations on your database. For example, instead of importing the `.sql` files, you could copy and paste the contents of the `.sql` files into the SQL Commands tab and execute them to create the tables and insert the data.
+In Oracle Databases, you can import data using the **SQL Commands**. This allows you to execute SQL statements directly on the database. You can use this feature to create tables, insert data, and perform various operations on your database.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 

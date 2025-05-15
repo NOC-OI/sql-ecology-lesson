@@ -8,8 +8,8 @@ title: Setup
 
 ### Data
 
-This lesson uses specific data files from the [Portal Project Teaching Database](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459). While the original lesson was designed for a different database format (SQLite), we’ve adapted it and created a modified copy.
-To access the data, visit the [OneDrive data folder](https://nocacuk-my.sharepoint.com/:f:/g/personal/tobfer_noc_ac_uk/Episk-ovbHdAv-CwEsJppjcB4Sei4kId3rGezf2qZiv8Qw?e=bAGdol) and click the **Download** button to download the ZIP file.
+This lesson uses specific data files from the [Portal Project Teaching Database](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459). To
+get the data, go to the [data location on figshare](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459) and click on the **Download all** button to download the zip file.
 
 If you are working on this lesson on your own, you can move the zipped data file to
 anywhere on your computer where it is easy to access, and unzip the files. If you
@@ -25,18 +25,52 @@ See the
 
 ### Database Access
 
-For this lesson, we've set up a sample database using **Oracle-XE** along with **[Adminer](https://www.adminer.org/en/)**, a lightweight, web-based database management tool. Adminer functions similarly to tools like phpMyAdmin or DBeaver, but it's much easier to set up and use.
+A sample schema has been set up for you in the **BODC Oracle** database. The necessary tables are already created, so no additional database setup is required.
 
-The database and tables have already been created for you—no setup is required on your end. Your task is simply to connect to the database using Adminer.
+To connect to the database, you can use one of the following tools:
 
-To do this, open your web browser and navigate to: [https://oracle-access.shop/](https://oracle-access.shop/). This will take you to the Adminer login screen. Use the following credentials:
+* [SQL Developer](https://www.oracle.com/uk/database/sqldeveloper/technologies/download/) (recommended)
+* [DBeaver](https://dbeaver.io/)
+* [Adminer](https://www.adminer.org/)
 
-- **System**: Oracle (beta)
-- **Server**: `//oracle-service.default.svc.cluster.local:1521/PORTAL_MAMMALS`
-- **Username**: `BODC`
-- **Password**: `bodc`
+All of these tools require a `TNSNAMES.ORA` file, which contains the connection details (hostname, port, and service name).
 
-> **Note:** These credentials provide access to the main database, which already contains preloaded data. During the workshop, you will receive your own individual username and password, which you’ll use to add and edit data. Please confirm your personal login details with your instructor.
+### Steps to connect:
+
+1. **Download the TNSNAMES.ORA file**
+   Download the [TNSNAMES.ORA file here](https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/TSNAMES.ORA) and save it somewhere accessible.
+
+2. **Install SQL Developer (recommended GUI)**
+
+   * Go to the [SQL Developer download page](https://www.oracle.com/uk/database/sqldeveloper/technologies/download/).
+   * Download the version that includes Java.
+   * Follow the installation instructions for your OS:
+
+     * **Windows**: Unzip the download and run `sqldeveloper.exe`.
+     * **Mac**: Drag SQL Developer into the Applications folder.
+
+3. **Launch and configure SQL Developer**
+
+   * On first launch, you may be asked to provide the path to the Java Development Kit (JDK). If needed, download it from the [Oracle JDK download page](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html).
+
+4. **Set the TNSNAMES.ORA path**
+
+   * In SQL Developer, go to `Tools > Preferences > Database > Advanced`.
+   * Under **TNSNAMES Directory**, browse and select the folder containing your `TNSNAMES.ORA` file.
+
+5. **Create a new connection**
+   (This step will be completed during the workshop.)
+
+   * Click the green `+` icon in SQL Developer to create a new connection.
+   * Enter the following details:
+
+     * **Connection Name**: e.g., `PORTAL MAMMALS`
+     * **Username**: Provided by your instructor
+     * **Password**: Provided by your instructor
+     * **Connection Type**: `TNS`
+     * **Network Alias**: `LIVDV1`
+
+> **Note**: Each participant will receive a unique username and password for querying and updating the database. Please confirm your credentials with your instructor during the session.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -44,8 +78,7 @@ To do this, open your web browser and navigate to: [https://oracle-access.shop/]
 
 ### Am I ready?
 
-The [first lesson episode](episodes/00-sql-introduction.md) has instructions
-on loading the data in Adminer. To test your setup, you can follow the instructions for importing your data into DB Browser under the sections [Relational
-Databases](../episodes/00-sql-introduction.md#relational-databases) or [Import](../episodes/00-sql-introduction.md#import).
+To confirm everything is working correctly, follow the instructions in [Episode 1](episodes/00-sql-introduction.md) of the lesson. It includes steps for connecting to the database and select the data.
+You can also test your environment by referring to the section on [Relational Databases](../episodes/00-sql-introduction.md#relational-databases).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
