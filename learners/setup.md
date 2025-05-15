@@ -38,7 +38,7 @@ All of these tools require a `TNSNAMES.ORA` file, which contains the connection 
 ### Steps to connect:
 
 1. **Download the TNSNAMES.ORA file**
-   Download the [TNSNAMES.ORA file here](https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/TSNAMES.ORA) and save it somewhere accessible.
+   Download the [TNSNAMES.ORA file here](https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/TNSNAMES.ORA) and save it somewhere accessible.
 
 2. **Install SQL Developer (recommended GUI)**
 
