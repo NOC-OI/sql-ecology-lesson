@@ -8,13 +8,7 @@ title: Setup
 
 ### Data
 
-This lesson uses specific data files from the [Portal Project Teaching Database](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459). To
-get the data, go to the [data location on figshare](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459) and click on the **Download all** button to download the zip file.
-
-If you are working on this lesson on your own, you can move the zipped data file to
-anywhere on your computer where it is easy to access, and unzip the files. If you
-are working on this lesson as part of a workshop, your instructor may advise you
-to unzip the data files in a specific location.
+This lesson uses specific data files from the [Portal Project Teaching Database](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459). To have access to the files, go to the [data location on figshare](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459). You don't need to download the files, as you can open them directly from the figshare page. However, if you want to download them, you can do so by clicking on the "Download" button on the right side of the page.
 
 See the
 [Ecology Workshop Overview Page](https://datacarpentry.org/ecology-workshop/) for more details about the data set.
@@ -38,7 +32,7 @@ All of these tools require a `TNSNAMES.ORA` file, which contains the connection 
 ### Steps to connect:
 
 1. **Download the TNSNAMES.ORA file**
-   Download the [TNSNAMES.ORA file here](https://raw.githubusercontent.com/NOC-OI/sql-ecology-lesson/refs/heads/main/utils/oracle_db/TNSNAMES.ORA) and save it somewhere accessible.
+   Go to the [TNSNAMES.ORA file location](https://github.com/NOC-OI/sql-ecology-lesson/blob/main/utils/oracle_db/TNSNAMES.ORA) and then click in the `Download Icon` to download the file. Save it in a folder on your computer.
 
 2. **Install SQL Developer (recommended GUI)**
 

@@ -27,7 +27,7 @@ This lesson uses [SQL Developer](https://www.oracle.com/uk/database/sqldeveloper
 
 Please refer to the [Setup instructions](../learners/setup.md) for detailed guidance on:
 
-* Downloading and extracting the dataset.
+* Accessing the dataset.
 * Installing and configuring SQL Developer.
 * Accessing the Oracle database, including how to obtain the necessary credentials.
 
@@ -275,17 +275,15 @@ You can see below a list of data types used in Oracle databases. The data types 
 As we mention before, there are other database management systems (DBMS) that use
 different data types. The data types used in Oracle are not the same as those used in other DBMSs. The following table shows some of the common names of data types between the various database platforms:
 
-Data Type | MS Access | SQL Server | Oracle | MySQL | PostgreSQL | SQLite
-Boolean | Yes/No | BIT | No native boolean* | No native boolean** | BOOLEAN | No native boolean***
-Integer | Number (Integer) | INT / INTEGER | NUMBER | INT / INTEGER | INT / INTEGER | INTEGER
-Float / Real | Number (Single) | FLOAT / REAL | FLOAT / NUMBER | FLOAT | NUMERIC / REAL | REAL / FLOAT
-Currency / Money | Currency | MONEY | No native type | No native type | MONEY | No native type
-String (fixed length) | — | CHAR(n) | CHAR(n) | CHAR(n) | CHAR(n) | TEXT (no strict typing)
-String (variable length) | Text (<256) / Memo (65K+) | VARCHAR(n) | VARCHAR2(n) | VARCHAR(n) | VARCHAR(n) / TEXT | TEXT
-Large text | Memo | TEXT | CLOB | TEXT | TEXT | TEXT
-Binary (fixed) | — | BINARY(n) | RAW(n) | BINARY(n) | BYTEA | No strict support
-Binary (variable / large) | OLE Object | VARBINARY, IMAGE | BLOB, LONG RAW | BLOB | BYTEA, BLOB | BLOB
-Date/Time | Date/Time | DATETIME, SMALLDATETIME | DATE, TIMESTAMP | DATETIME, TIMESTAMP | TIMESTAMP / DATE | DATETIME, TEXT
+| Data type                                             | Access                                                                                                   | SQLServer                                                               | Oracle           | MySQL         | PostgreSQL    |
+| :---------------------------------------------------- | :------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- | :--------------- | :------------ | :------------ |
+| boolean                                               | Yes/No                                                                                                   | Bit                                                                     | Byte             | N/A           | Boolean       |
+| integer                                               | Number (integer)                                                                                         | Int                                                                     | Number           | Int / Integer | Int / Integer |
+| float                                                 | Number (single)                                                                                          | Float / Real                                                            | Number           | Float         | Numeric       |
+| currency                                              | Currency                                                                                                 | Money                                                                   | N/A              | N/A           | Money         |
+| string (fixed)                                        | N/A                                                                                                      | Char                                                                    | Char             | Char          | Char          |
+| string (variable)                                     | Text (\<256) / Memo (65k+)                                                                                | Varchar                                                                 | Varchar2         | Varchar       | Varchar       |
+| binary object	OLE Object Memo	Binary (fixed up to 8K) | Varbinary (\<8K)                                                                                          | Image (\<2GB)	Long                                                       | Raw	Blob         | Text	Binary   | Varbinary     |
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 

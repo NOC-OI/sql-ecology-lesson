@@ -299,7 +299,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Introducing Databases and SQL</h1>
-        <p>Last updated on 2025-05-15 |
+        <p>Last updated on 2025-05-16 |
 
         <a href="https://github.com/datacarpentry/sql-ecology-lesson/edit/main/episodes/00-sql-introduction.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -348,7 +348,7 @@ Developer</a> along with the <a href="https://figshare.com/articles/Portal_Proje
 Project dataset</a>.</p>
 <p>Please refer to the <a href="index.html#setup">Setup instructions</a> for
 detailed guidance on:</p>
-<ul><li>Downloading and extracting the dataset.</li>
+<ul><li>Accessing the dataset.</li>
 <li>Installing and configuring SQL Developer.</li>
 <li>Accessing the Oracle database, including how to obtain the necessary
 credentials.</li>
@@ -703,22 +703,56 @@ instead).</td>
 not the same as those used in other DBMSs. The following table shows
 some of the common names of data types between the various database
 platforms:</p>
-<p>Data Type | MS Access | SQL Server | Oracle | MySQL | PostgreSQL |
-SQLite Boolean | Yes/No | BIT | No native boolean* | No native boolean**
-| BOOLEAN | No native boolean*** Integer | Number (Integer) | INT /
-INTEGER | NUMBER | INT / INTEGER | INT / INTEGER | INTEGER Float / Real
-| Number (Single) | FLOAT / REAL | FLOAT / NUMBER | FLOAT | NUMERIC /
-REAL | REAL / FLOAT Currency / Money | Currency | MONEY | No native type
-| No native type | MONEY | No native type String (fixed length) | — |
-CHAR(n) | CHAR(n) | CHAR(n) | CHAR(n) | TEXT (no strict typing) String
-(variable length) | Text (&lt;256) / Memo (65K+) | VARCHAR(n) |
-VARCHAR2(n) | VARCHAR(n) | VARCHAR(n) / TEXT | TEXT Large text | Memo |
-TEXT | CLOB | TEXT | TEXT | TEXT Binary (fixed) | — | BINARY(n) | RAW(n)
-| BINARY(n) | BYTEA | No strict support Binary (variable / large) | OLE
-Object | VARBINARY, IMAGE | BLOB, LONG RAW | BLOB | BYTEA, BLOB | BLOB
-Date/Time | Date/Time | DATETIME, SMALLDATETIME | DATE, TIMESTAMP |
-DATETIME, TIMESTAMP | TIMESTAMP / DATE | DATETIME, TEXT</p>
-<div id="keypoints1" class="callout keypoints">
+<table class="table"><colgroup><col width="19%"><col width="38%"><col width="26%"><col width="5%"><col width="4%"><col width="4%"></colgroup><thead><tr class="header"><th align="left">Data type</th>
+<th align="left">Access</th>
+<th align="left">SQLServer</th>
+<th align="left">Oracle</th>
+<th align="left">MySQL</th>
+<th align="left">PostgreSQL</th>
+</tr></thead><tbody><tr class="odd"><td align="left">boolean</td>
+<td align="left">Yes/No</td>
+<td align="left">Bit</td>
+<td align="left">Byte</td>
+<td align="left">N/A</td>
+<td align="left">Boolean</td>
+</tr><tr class="even"><td align="left">integer</td>
+<td align="left">Number (integer)</td>
+<td align="left">Int</td>
+<td align="left">Number</td>
+<td align="left">Int / Integer</td>
+<td align="left">Int / Integer</td>
+</tr><tr class="odd"><td align="left">float</td>
+<td align="left">Number (single)</td>
+<td align="left">Float / Real</td>
+<td align="left">Number</td>
+<td align="left">Float</td>
+<td align="left">Numeric</td>
+</tr><tr class="even"><td align="left">currency</td>
+<td align="left">Currency</td>
+<td align="left">Money</td>
+<td align="left">N/A</td>
+<td align="left">N/A</td>
+<td align="left">Money</td>
+</tr><tr class="odd"><td align="left">string (fixed)</td>
+<td align="left">N/A</td>
+<td align="left">Char</td>
+<td align="left">Char</td>
+<td align="left">Char</td>
+<td align="left">Char</td>
+</tr><tr class="even"><td align="left">string (variable)</td>
+<td align="left">Text (&lt;256) / Memo (65k+)</td>
+<td align="left">Varchar</td>
+<td align="left">Varchar2</td>
+<td align="left">Varchar</td>
+<td align="left">Varchar</td>
+</tr><tr class="odd"><td align="left">binary object OLE Object Memo Binary (fixed up to
+8K)</td>
+<td align="left">Varbinary (&lt;8K)</td>
+<td align="left">Image (&lt;2GB) Long</td>
+<td align="left">Raw Blob</td>
+<td align="left">Text Binary</td>
+<td align="left">Varbinary</td>
+</tr></tbody></table><div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
@@ -793,8 +827,8 @@ vocabulary, but they are all based on the same ideas.</li>
   "url": "https://datacarpentry.github.io/sql-ecology-lesson/instructor/00-sql-introduction.html",
   "identifier": "https://datacarpentry.github.io/sql-ecology-lesson/instructor/00-sql-introduction.html",
   "dateCreated": "2015-02-10",
-  "dateModified": "2025-05-15",
-  "datePublished": "2025-05-15"
+  "dateModified": "2025-05-16",
+  "datePublished": "2025-05-16"
 }
 
   </script><script>
