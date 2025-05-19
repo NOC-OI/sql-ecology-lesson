@@ -31,14 +31,14 @@ Using the wildcard \* counts the number of records (rows):
 
 ```sql
 SELECT COUNT(*)
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 We can also find out how much all of those individuals weigh:
 
 ```sql
 SELECT COUNT(*), SUM(weight)
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 We can output this value in kilograms (dividing the value by 1000.00), then rounding to 3 decimal places:
@@ -46,7 +46,7 @@ We can output this value in kilograms (dividing the value by 1000.00), then roun
 
 ```sql
 SELECT ROUND(SUM(weight)/1000.00, 3)
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 There are many other aggregate functions included in SQL, for example:
@@ -67,11 +67,11 @@ Can you modify it so that it outputs these values only for weights between 5 and
 ```sql
 -- All animals
 SELECT SUM(weight), AVG(weight), MIN(weight), MAX(weight)
-FROM surveys;
+FROM digiocean.surveys;
 
 -- Only weights between 5 and 10
 SELECT SUM(weight), AVG(weight), MIN(weight), MAX(weight)
-FROM surveys
+FROM digiocean.surveys
 WHERE (weight > 5) AND (weight < 10);
 ```
 
@@ -84,7 +84,7 @@ using a `GROUP BY` clause
 
 ```sql
 SELECT species_id, COUNT(*)
-FROM surveys
+FROM digiocean.surveys
 GROUP BY species_id;
 ```
 
@@ -109,7 +109,7 @@ Can you get the answer to both 2 and 3 in a single query?
 
 ```sql
 SELECT year, COUNT(*)
-FROM surveys
+FROM digiocean.surveys
 GROUP BY year;
 ```
 
@@ -121,7 +121,7 @@ GROUP BY year;
 
 ```sql
 SELECT year, species_id, COUNT(*), AVG(weight)
-FROM surveys
+FROM digiocean.surveys
 GROUP BY year, species_id;
 ```
 
@@ -137,7 +137,7 @@ species captured, ordered by the count:
 
 ```sql
 SELECT species_id, COUNT(*)
-FROM surveys
+FROM digiocean.surveys
 GROUP BY species_id
 ORDER BY COUNT(species_id);
 ```
@@ -151,14 +151,14 @@ We can use aliases in column names using `AS`:
 
 ```sql
 SELECT MAX(year) AS last_surveyed_year
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 The `AS` isn't technically required, so you could do
 
 ```sql
 SELECT MAX(year) last_surveyed_year
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 but using `AS` is much clearer so it is good style to include it.
@@ -167,7 +167,7 @@ We can not only alias column names, but also table names in the same way:
 
 ```sql
 SELECT *
-FROM surveys surv;
+FROM digiocean.surveys surv;
 ```
 
 **Important**: In this case, you cannot use the `AS` keyword, because it is not allowed for table names.
@@ -185,7 +185,7 @@ about species with a count higher than 10:
 
 ```sql
 SELECT species_id, COUNT(species_id)
-FROM surveys
+FROM digiocean.surveys
 GROUP BY species_id
 HAVING COUNT(species_id) > 10;
 ```
@@ -205,7 +205,7 @@ to that alias in the `HAVING` clause. For example, in the above query, we can ca
 
 ```sql
 SELECT species_id, COUNT(species_id) AS occurrences
-FROM surveys
+FROM digiocean.surveys
 GROUP BY species_id
 HAVING occurrences > 10;
 ```
@@ -232,7 +232,7 @@ Write a query that returns, from the `species` table, the number of
 
 ```sql
 SELECT taxa, COUNT(*) AS n
-FROM species
+FROM digiocean.species
 GROUP BY taxa
 HAVING COUNT(*) > 10;
 ```
@@ -257,7 +257,7 @@ summer months (May to September) of the year 2000. That query would look like th
 
 ```sql
 SELECT *
-FROM surveys
+FROM digiocean.surveys
 WHERE year = 2000 AND (month > 4 AND month < 10);
 ```
 Rather than writing this every time, we can define a view to store this subset:
@@ -265,7 +265,7 @@ Rather than writing this every time, we can define a view to store this subset:
 ```sql
 CREATE VIEW summer_2000 AS
 SELECT *
-FROM surveys
+FROM digiocean.surveys
 WHERE year = 2000 AND (month > 4 AND month < 10);
 ```
 

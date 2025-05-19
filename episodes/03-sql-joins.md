@@ -37,9 +37,9 @@ species id.
 
 ```sql
 SELECT *
-FROM surveys
-JOIN species
-ON surveys.species_id = species.species_id;
+FROM digiocean.surveys
+JOIN digiocean.species
+ON digiocean.surveys.species_id = digiocean.species.species_id;
 ```
 
 `ON` is like `WHERE`. It filters things out according to a test condition.  We use
@@ -66,8 +66,8 @@ the common column is `species_id`.
 
 ```sql
 SELECT *
-FROM surveys
-JOIN species
+FROM digiocean.surveys
+JOIN digiocean.species
 USING (species_id);
 ```
 
@@ -88,8 +88,8 @@ actual species names.
 
 ```sql
 SELECT surveys.year, surveys.month, surveys.day, species.genus, species.species
-FROM surveys
-JOIN species
+FROM digiocean.surveys
+JOIN digiocean.species
 ON surveys.species_id = species.species_id;
 ```
 
@@ -105,7 +105,7 @@ For example, you may see the query above written without an explicit JOIN.
 
 ```sql
 SELECT surveys.year, surveys.month, surveys.day, species.genus, species.species
-FROM surveys, species
+FROM digiocean.surveys, digiocean.species
 WHERE surveys.species_id = species.species_id;
 ```
 
@@ -125,8 +125,8 @@ joining tables in SQL.
 
 ```sql
 SELECT species.genus, species.species, surveys.weight
-FROM surveys
-JOIN species
+FROM digiocean.surveys
+JOIN digiocean.species
 ON surveys.species_id = species.species_id;
 ```
 
@@ -140,8 +140,8 @@ We can count the number of records returned by our original join query.
 
 ```sql
 SELECT COUNT(*)
-FROM surveys
-JOIN species
+FROM digiocean.surveys
+JOIN digiocean.species
 USING (species_id);
 ```
 
@@ -149,7 +149,7 @@ Notice that this number is smaller than the number of records present in the
 survey data.
 
 ```sql
-SELECT COUNT(*) FROM surveys;
+SELECT COUNT(*) FROM digiocean.surveys;
 ```
 
 This is because, by default, SQL only returns records where the joining value is present in the joined columns of both tables (i.e. it takes the *intersection* of the two join columns). This joining behaviour is known as an `INNER JOIN`. In fact, the `JOIN` keyword is shorthand for `INNER JOIN` in Oracle, and the two terms can be used interchangeably as they will produce the same result.
@@ -176,8 +176,8 @@ alt='Diagrams representing JOINs in Oracle'
 ## Solution
 
 ```sql
-SELECT * FROM surveys
-LEFT JOIN species
+SELECT * FROM digiocean.surveys
+LEFT JOIN digiocean.species
 USING (species_id);
 ```
 
@@ -198,7 +198,7 @@ USING (species_id);
 
 ```sql
 SELECT COUNT(*)
-FROM surveys
+FROM digiocean.surveys
 WHERE species_id IS NULL;
 ```
 
@@ -216,8 +216,8 @@ could do something like
 
 ```sql
 SELECT plots.plot_type, AVG(surveys.weight)
-FROM surveys
-JOIN plots
+FROM digiocean.surveys
+JOIN digiocean.plots
 ON surveys.plot_id = plots.plot_id
 GROUP BY plots.plot_type;
 ```
@@ -237,9 +237,9 @@ GROUP BY plots.plot_type;
 -- select the plot id, genus and count of individuals
 SELECT surveys.plot_id, species.genus, COUNT(*) AS number_indiv
 -- from table surveys
-FROM surveys
+FROM digiocean.surveys
 -- join with table species
-JOIN species
+JOIN digiocean.species
 -- on the species id
 ON surveys.species_id = species.species_id
 -- group the results by genus and plot id
@@ -264,8 +264,8 @@ ORDER BY surveys.plot_id ASC, number_indiv DESC;
 
 ```sql
 SELECT surveys.species_id, AVG(surveys.weight)
-FROM surveys
-JOIN species
+FROM digiocean.surveys
+JOIN digiocean.species
 ON surveys.species_id = species.species_id
 WHERE species.taxa = 'Rodent'
 GROUP BY surveys.species_id;
@@ -287,7 +287,7 @@ We can represent unknown sexes with `'U'` instead of `NULL`:
 
 ```sql
 SELECT species_id, sex, COALESCE(sex, 'U') AS sex_cleaned
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 The lone "sex" column is only included in the query above to illustrate where
@@ -306,7 +306,7 @@ The lone "sex" column is only included in the query above to illustrate where
 
 ```sql
 SELECT hindfoot_length, COALESCE(hindfoot_length, 30)
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 :::::::::::::::::::::::::
@@ -326,7 +326,7 @@ FROM surveys;
 
 ```sql
 SELECT species_id, AVG(COALESCE(hindfoot_length, 30))
-FROM surveys
+FROM digiocean.surveys
 GROUP BY species_id;
 ```
 
@@ -341,8 +341,8 @@ a valid joining value:
 
 ```sql
 SELECT surveys.year, surveys.month, surveys.day, species.genus, species.species
-FROM surveys
-JOIN species
+FROM digiocean.surveys
+JOIN digiocean.species
 ON COALESCE(surveys.species_id, 'AB') = species.species_id;
 ```
 
@@ -359,8 +359,8 @@ ON COALESCE(surveys.species_id, 'AB') = species.species_id;
 
 ```sql
 SELECT plot_id, COALESCE(genus, 'Rodent') AS genus2, COUNT(*)
-FROM surveys
-LEFT JOIN species
+FROM digiocean.surveys
+LEFT JOIN digiocean.species
 ON surveys.species_id=species.species_id
 -- because we are using Oracle version 21, we need to write the full COALESCE
 -- instead of the alias genus2
@@ -379,7 +379,7 @@ We can "null out" plot 7:
 
 ```sql
 SELECT species_id, plot_id, NULLIF(plot_id, 7) AS plot_id_nullified
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 Some more functions which are common to SQL databases are listed in the table
@@ -420,7 +420,7 @@ to shortest.
 
 ```sql
 SELECT DISTINCT genus
-FROM species
+FROM digiocean.species
 ORDER BY LENGTH(genus) DESC;
 ```
 
@@ -433,8 +433,8 @@ As we saw before, aliases make things clearer, and are especially useful when jo
 ```sql
 SELECT surv.year AS yr, surv.month AS mo, surv.day AS day,
        sp.genus AS gen, sp.species AS sp
-FROM surveys surv
-JOIN species sp
+FROM digiocean.surveys surv
+JOIN digiocean.species sp
 ON surv.species_id = sp.species_id;
 ```
 
@@ -470,7 +470,7 @@ Have a look at the following questions; these questions are written in plain Eng
 
   ```sql
   SELECT plot_type, COUNT(*) AS num_plots
-  FROM plots
+  FROM digiocean.plots
   GROUP BY plot_type;
   ```
 
@@ -478,7 +478,7 @@ Have a look at the following questions; these questions are written in plain Eng
 
   ```sql
   SELECT year, sex, COUNT(*) AS num_animal
-  FROM surveys
+  FROM digiocean.surveys
   GROUP BY sex, year;
   ```
 
@@ -486,8 +486,8 @@ Have a look at the following questions; these questions are written in plain Eng
 
   ```sql
   SELECT species_id, plot_type, COUNT(*)
-  FROM surveys
-  JOIN plots USING(plot_id)
+  FROM digiocean.surveys
+  JOIN digiocean.plots USING(plot_id)
   WHERE species_id IS NOT NULL
   GROUP BY species_id, plot_type;
   ```
@@ -496,16 +496,17 @@ Have a look at the following questions; these questions are written in plain Eng
 
   ```sql
   SELECT taxa, AVG(weight)
-  FROM surveys
-  JOIN species ON species.species_id = surveys.species_id
+  FROM digiocean.surveys
+  JOIN digiocean.species ON species.species_id = surveys.species_id
   GROUP BY taxa;
   ```
 
 5. Solution:
 
   ```sql
-  SELECT surveys.species_id, MIN(weight), MAX(weight), AVG(weight) FROM surveys
-  JOIN species ON surveys.species_id = species.species_id
+  SELECT surveys.species_id, MIN(weight), MAX(weight), AVG(weight)
+  FROM digiocean.surveys
+  JOIN digiocean.species ON surveys.species_id = species.species_id
   WHERE taxa = 'Rodent'
   GROUP BY surveys.species_id;
   ```
@@ -514,7 +515,8 @@ Have a look at the following questions; these questions are written in plain Eng
 
   ```sql
   SELECT surveys.species_id, sex, AVG(hindfoot_length)
-  FROM surveys JOIN species ON surveys.species_id = species.species_id
+  FROM digiocean.surveys
+  JOIN digiocean.species ON surveys.species_id = species.species_id
   WHERE (taxa = 'Rodent') AND (sex IS NOT NULL)
   GROUP BY surveys.species_id, sex;
   ```
@@ -523,8 +525,8 @@ Have a look at the following questions; these questions are written in plain Eng
 
   ```sql
   SELECT surveys.species_id, year, AVG(weight) as mean_weight
-  FROM surveys
-  JOIN species ON surveys.species_id = species.species_id
+  FROM digiocean.surveys
+  JOIN digiocean.species ON surveys.species_id = species.species_id
   WHERE taxa = 'Rodent' GROUP BY surveys.species_id, year;
   ```
 

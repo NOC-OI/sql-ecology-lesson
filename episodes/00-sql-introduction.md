@@ -158,7 +158,9 @@ Let’s explore the data available in the database. Once you have your credentia
    * **Network Alias**: `LIVDV1`
 3. Click **Connect**.
 
-Once connected, you’ll see a list of schemas on the left panel. Select the `DIGIOCEAN` schema. This will display the database tables in the main panel: **PLOTS**, **SPECIES**, and **SURVEYS**. Each table corresponds to one of the CSV files you explored earlier.
+Once connected, you’ll see the **Name** of your connection in the left panel. Expand the connection to see the options available.
+These options wil be related to your username. Please click  on "+ (expand)" to expand the **Other Users** section, and then expand the **DIGIOCEAN** schema.
+This will display the database tables in the main panel: **PLOTS**, **SPECIES**, and **SURVEYS**. Each table corresponds to one of the CSV files you explored earlier.
 
 To view the contents of a table, click on the table name, then go to the **Data** tab. This provides a spreadsheet-like view of the table contents.
 

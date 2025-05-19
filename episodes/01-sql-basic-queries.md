@@ -28,7 +28,7 @@ To select all columns from a table, use the asterisk (`*`) wildcard, like so:
 
 ```sql
 SELECT *
-FROM surveys;
+FROM digiocean.surveys;
 ```
 We have capitalized the words SELECT and FROM because they are SQL keywords.
 SQL is case insensitive, but it helps for readability, and is good style.
@@ -37,7 +37,7 @@ If we want to select a single column, we can type the column name instead of the
 
 ```sql
 SELECT year
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 If we want more information, we can add more columns to the list of fields,
@@ -45,7 +45,7 @@ right after SELECT:
 
 ```sql
 SELECT year, month, day
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 ### Limiting Results
@@ -54,7 +54,7 @@ Sometimes, you don’t need to view all the results—just a sample to understan
 
 ```sql
 SELECT *
-FROM surveys
+FROM digiocean.surveys
 FETCH FIRST 10 ROWS ONLY;
 ```
 
@@ -64,14 +64,14 @@ If we want to see only the unique values—for example, to get a quick look at w
 
 ```sql
 SELECT DISTINCT species_id
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 If you select more than one column, `DISTINCT` returns unique combinations of values across those columns:
 
 ```sql
 SELECT DISTINCT year, species_id
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 ### Calculated values
@@ -82,7 +82,7 @@ on different dates, but we needed it in kg instead of g we would use
 
 ```sql
 SELECT year, month, day, weight / 1000
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 When we run the query, the expression `weight / 1000` is evaluated for each
@@ -94,7 +94,7 @@ example, we could round the values to make them easier to read.
 
 ```sql
 SELECT plot_id, species_id, sex, weight, ROUND(weight / 1000, 2)
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 :::::::::::::::::::::::::::::::::::::::::  callout
@@ -117,7 +117,7 @@ In Oracle Databases, you can import data using the **SQL Commands**. This allows
 
 ```sql
 SELECT day, month, year, species_id, weight * 1000
-FROM surveys;
+FROM digiocean.surveys;
 ```
 
 :::::::::::::::::::::::::
@@ -133,7 +133,7 @@ criteria.  For example, let's say we only want data for the species
 
 ```sql
 SELECT *
-FROM surveys
+FROM digiocean.surveys
 WHERE species_id='DM';
 ```
 
@@ -141,7 +141,7 @@ We can do the same thing with numbers.
 Here, we only want the data since 2000:
 
 ```sql
-SELECT * FROM surveys
+SELECT * FROM digiocean.surveys
 WHERE year >= 2000;
 ```
 
@@ -158,7 +158,7 @@ starting in the year 2000:
 
 ```sql
 SELECT *
-FROM surveys
+FROM digiocean.surveys
 WHERE (year >= 2000) AND (species_id = 'DM');
 ```
 
@@ -171,14 +171,14 @@ species codes `DM`, `DO`, and `DS`, we could combine the tests using OR:
 
 ```sql
 SELECT *
-FROM surveys
+FROM digiocean.surveys
 WHERE (species_id = 'DM') OR (species_id = 'DO') OR (species_id = 'DS');
 ```
 Alternatively, we can simplify this using the `IN` operator:
 
 ```sql
 SELECT *
-FROM surveys
+FROM digiocean.surveys
 WHERE species_id IN ('DM', 'DO', 'DS');
 ```
 This is equivalent to the previous query, but is easier to read.
@@ -187,7 +187,7 @@ You can also write a negative condition using `NOT`:
 
 ```sql
 SELECT *
-FROM surveys
+FROM digiocean.surveys
 WHERE NOT (species_id = 'DM');
 ```
 
@@ -207,7 +207,7 @@ This will return all rows where the species ID is not *Dipodomys merriami*.
 
 ```sql
 SELECT day, month, year, species_id, weight / 1000
-FROM surveys
+FROM digiocean.surveys
 WHERE (plot_id = 1) AND (weight > 75);
 ```
 
@@ -223,7 +223,7 @@ to understand:
 
 ```sql
 SELECT *
-FROM surveys
+FROM digiocean.surveys
 WHERE (year >= 2000) AND (species_id IN ('DM', 'DO', 'DS'));
 ```
 
@@ -240,7 +240,7 @@ commented version of the above query can be written as:
 ```sql
 -- Get post 2000 data on Dipodomys' species
 -- These are in the surveys table, and we are interested in all columns
-SELECT * FROM surveys
+SELECT * FROM digiocean.surveys
 -- Sampling year is in the column `year`, and we want to include 2000
 WHERE (year >= 2000)
 -- Dipodomys' species have the `species_id` DM, DO, and DS
@@ -260,14 +260,14 @@ this information in our main **surveys** table.
 
 ```sql
 SELECT *
-FROM species;
+FROM digiocean.species;
 ```
 
 Now let's order it by taxa.
 
 ```sql
 SELECT *
-FROM species
+FROM digiocean.species
 ORDER BY taxa ASC;
 ```
 
@@ -276,7 +276,7 @@ We could alternately use `DESC` to get descending order.
 
 ```sql
 SELECT *
-FROM species
+FROM digiocean.species
 ORDER BY taxa DESC;
 ```
 
@@ -287,7 +287,7 @@ To truly be alphabetical, we might want to order by genus then species.
 
 ```sql
 SELECT *
-FROM species
+FROM digiocean.species
 ORDER BY genus ASC, species ASC;
 ```
 
@@ -306,7 +306,7 @@ table, sorted with the largest weights at the top. Please note that you may need
 -- Get the year, species_id, and weight in kg
 SELECT year, species_id, weight / 1000
 -- from the surveys table
-FROM surveys
+FROM digiocean.surveys
 -- only include rows where weight is not null
 WHERE weight IS NOT NULL
 -- sort by weight in descending order
@@ -325,7 +325,7 @@ we only want to see genus and species.
 
 ```sql
 SELECT genus, species
-FROM species
+FROM digiocean.species
 WHERE taxa = 'Bird'
 ORDER BY species_id ASC;
 ```
